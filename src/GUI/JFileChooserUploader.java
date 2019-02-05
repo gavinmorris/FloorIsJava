@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import Upload.FileHandler;
 
-public class DemoJFileChooser extends JPanel implements ActionListener {
+public class JFileChooserUploader extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,14 +21,13 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
 	JFileChooser chooser;
 	String choosertitle;
    
-	public DemoJFileChooser() {
-	    go = new JButton("Uplaod Project");
+	public JFileChooserUploader() {
+	    go = new JButton("Upload Project");
 	    go.addActionListener(this);
 	    add(go);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		int result;
         
 	    chooser = new JFileChooser(); 
 	    chooser.setCurrentDirectory(new java.io.File("."));
@@ -54,7 +53,7 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		  System.out.println("-------new---------");
+		  System.out.println("-------Java Files filtered---------");
 		  for ( Path p : pathList ) {
 			    FileHandler.addNewFile(p);
 		  }
@@ -73,7 +72,7 @@ public class DemoJFileChooser extends JPanel implements ActionListener {
     
 	public static void main(String s[]) {
 	    JFrame frame = new JFrame("");
-		DemoJFileChooser panel = new DemoJFileChooser();
+		JFileChooserUploader panel = new JFileChooserUploader();
 		frame.addWindowListener(
 		  new WindowAdapter() {
 		    public void windowClosing(WindowEvent e) {
