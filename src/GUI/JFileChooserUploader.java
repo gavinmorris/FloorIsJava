@@ -47,7 +47,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  ArrayList<Path> pathList = new ArrayList<Path>();
 		  //loops through directory and gets paths of java files
 		  try {
-			  Files.walk(Paths.get(chooser.getCurrentDirectory().getPath()))
+			  Files.walk(Paths.get(chooser.getSelectedFile().getPath()))
 		        .filter(Files::isRegularFile)
 		        .forEach(pathList::add);
 		} catch (IOException e1) {
