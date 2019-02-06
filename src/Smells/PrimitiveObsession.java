@@ -9,7 +9,6 @@ import java.util.List;
 
 public class PrimitiveObsession {
 	
-	private List<String> classes;
 	private List<File> files;
 	
 	public PrimitiveObsession(List<File> fileList) {
@@ -27,7 +26,6 @@ public class PrimitiveObsession {
 			        numOfPts += countBool(line);
 			        numOfPts += countChar(line);
 			    }
-			    // line is not visible here.
 			}
 		}
 		return numOfPts;

@@ -2,6 +2,7 @@ package GUI;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.JPanel;
 
+import Smells.PrimitiveObsession;
 import Upload.FileHandler;
 
 public class JFileChooserUploader extends JPanel implements ActionListener {
@@ -26,7 +28,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 	    go.addActionListener(this);
 	    add(go);
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
         
 	    chooser = new JFileChooser(); 
@@ -54,12 +56,22 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			e1.printStackTrace();
 		}
 		  System.out.println("-------Java Files filtered---------");
+		  //adding the new files to 
 		  for ( Path p : pathList ) {
 			    FileHandler.addNewFile(p);
 		  }
+		  //print the added files
 		  for(File f: FileHandler.uploadedFiles) {
 			  System.out.println(f.getName());
 		  }
+		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles);
+		    try {
+				System.out.println(po.countPrimitiveTypes());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		  //look through the files and grab the names of the classes
 		  ArrayList<String> classList = (ArrayList<String>) FileHandler.getClasses(FileHandler.uploadedFiles);
 		  for(String f: classList) {
 			  System.out.println(f);
@@ -69,12 +81,12 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  System.out.println("No Selection ");
 		}
 	}
-   
+
 	public Dimension getPreferredSize(){
 		return new Dimension(200, 200);
 	}
     
-	public static void main(String s[]) {
+	public static void main(String s[]) throws FileNotFoundException, IOException {
 	    JFrame frame = new JFrame("");
 		JFileChooserUploader panel = new JFileChooserUploader();
 		frame.addWindowListener(
