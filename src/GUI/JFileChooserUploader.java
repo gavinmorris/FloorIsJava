@@ -2,7 +2,6 @@ package GUI;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,8 +10,8 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.JPanel;
 
+import FileProcessing.FileHandler;
 import Smells.PrimitiveObsession;
-import Upload.FileHandler;
 
 public class JFileChooserUploader extends JPanel implements ActionListener {
 
@@ -46,17 +45,16 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  System.out.println("getSelectedFile() : " 
 		     +  chooser.getSelectedFile());
 		  ArrayList<Path> pathList = new ArrayList<Path>();
-		  //Recursively loops through directory
+		  //loops through directory and gets paths of java files
 		  try {
 			  Files.walk(Paths.get(chooser.getCurrentDirectory().getPath()))
 		        .filter(Files::isRegularFile)
 		        .forEach(pathList::add);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		  System.out.println("-------Java Files filtered---------");
-		  //adding the new files to 
+		  //process the files and add to file list
 		  for ( Path p : pathList ) {
 			    FileHandler.addNewFile(p);
 		  }
@@ -64,11 +62,12 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  for(File f: FileHandler.uploadedFiles) {
 			  System.out.println(f.getName());
 		  }
+		  //Look into files and load them for Primitive Obsession smell test
 		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles);
 		    try {
-				System.out.println(po.countPrimitiveTypes());
+		    	//count the primitive types in the whole project
+				System.out.println("Number of Primitve Types of code:"+po.countPrimitiveTypes());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		  //look through the files and grab the names of the classes
@@ -86,7 +85,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		return new Dimension(200, 200);
 	}
     
-	public static void main(String s[]) throws FileNotFoundException, IOException {
+	public static void main(String s[]) {
 	    JFrame frame = new JFrame("");
 		JFileChooserUploader panel = new JFileChooserUploader();
 		frame.addWindowListener(
