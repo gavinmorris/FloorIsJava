@@ -72,6 +72,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			}
 		  //look through the files and grab the names of the classes
 		  ArrayList<String> classList = (ArrayList<String>) FileHandler.getClasses(FileHandler.uploadedFiles);
+		  System.out.println("-------Classes--------");
 		  for(String f: classList) {
 			  System.out.println(f);
 		  }
