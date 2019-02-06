@@ -60,7 +60,11 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  for(File f: FileHandler.uploadedFiles) {
 			  System.out.println(f.getName());
 		  }
+		  ArrayList<String> classList = (ArrayList<String>) FileHandler.getClasses(FileHandler.uploadedFiles);
+		  for(String f: classList) {
+			  System.out.println(f);
 		  }
+		}
 		else {
 		  System.out.println("No Selection ");
 		}

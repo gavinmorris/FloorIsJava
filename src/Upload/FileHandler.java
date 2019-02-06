@@ -24,9 +24,9 @@ public class FileHandler {
 			return false;
 		}
 	}
-	public List<String> getClasses() {
+	public static List<String> getClasses(List<File> files) {
 		List<String> classes = new ArrayList<String>();
-		for(File file: uploadedFiles) {
+		for(File file: files) {
 			classes.add(file.getName().replace(".java", "").trim());
 		}
 		return classes;
