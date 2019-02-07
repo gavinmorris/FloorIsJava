@@ -11,7 +11,7 @@ import java.util.*;
 import javax.swing.JPanel;
 
 import FileProcessing.FileHandler;
-import Smells.PrimitiveObsession;
+import PrimtiveObsession.PrimitiveObsession;
 
 public class JFileChooserUploader extends JPanel implements ActionListener {
 

@@ -1,4 +1,4 @@
-package Smells;
+package PrimtiveObsession;
 
 public class PrimitiveDataTypes {
 	public static final String INT = "int";

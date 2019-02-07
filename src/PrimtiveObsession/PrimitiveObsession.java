@@ -1,4 +1,4 @@
-package Smells;
+package PrimtiveObsession;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-public class PrimitiveObsession {
+public class PrimitiveObsession implements PO{
 	
 	private List<File> files;
 	private List<String> classes;
@@ -16,7 +16,7 @@ public class PrimitiveObsession {
 		this.files = fileList;
 		this.classes = classList;
 	}
-	private int countPrimitiveTypes() throws FileNotFoundException, IOException {
+	public int countPrimitiveTypes() throws FileNotFoundException, IOException {
 		int numOfPts = 0;
 		for(File f: files) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
@@ -39,7 +39,7 @@ public class PrimitiveObsession {
 		return numOfPts;
 	}
 	
-	private int countClassObjects() throws FileNotFoundException, IOException {
+	public int countClassObjects() throws FileNotFoundException, IOException {
 		int numOfClassObj=0;
 		for(File f: files) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
