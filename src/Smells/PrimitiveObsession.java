@@ -10,9 +10,11 @@ import java.util.List;
 public class PrimitiveObsession {
 	
 	private List<File> files;
+	private List<String> classes;
 	
-	public PrimitiveObsession(List<File> fileList) {
+	public PrimitiveObsession(List<File> fileList,  List<String> classList) {
 		this.files = fileList;
+		this.classes = classList;
 	}
 	public int countPrimitiveTypes() throws FileNotFoundException, IOException {
 		int numOfPts = 0;
@@ -28,6 +30,7 @@ public class PrimitiveObsession {
 			    }
 			}
 		}
+		System.out.println(classes.toString());
 		return numOfPts;
 	}
 	

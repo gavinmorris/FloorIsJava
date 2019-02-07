@@ -58,24 +58,15 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  for ( Path p : pathList ) {
 			    FileHandler.addNewFile(p);
 		  }
-		  //print the added files
-		  for(File f: FileHandler.uploadedFiles) {
-			  System.out.println(f.getName());
-		  }
+		  
 		  //Look into files and load them for Primitive Obsession smell test
-		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles);
+		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles, FileHandler.getClasses(FileHandler.uploadedFiles));
 		    try {
 		    	//count the primitive types in the whole project
 				System.out.println("Number of Primitve Types of code:"+po.countPrimitiveTypes());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-		  //look through the files and grab the names of the classes
-		  ArrayList<String> classList = (ArrayList<String>) FileHandler.getClasses(FileHandler.uploadedFiles);
-		  System.out.println("-------Classes--------");
-		  for(String f: classList) {
-			  System.out.println(f);
-		  }
 		}
 		else {
 		  System.out.println("No Selection ");
