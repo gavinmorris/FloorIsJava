@@ -61,12 +61,11 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  
 		  //Look into files and load them for Primitive Obsession smell test
 		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles, FileHandler.getClasses(FileHandler.uploadedFiles));
-		    try {
-		    	//count the primitive types in the whole project
-				System.out.println("Number of Primitve Types of code:"+po.countPrimitiveTypes());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+		  try {
+			po.report();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		}
 		else {
 		  System.out.println("No Selection ");

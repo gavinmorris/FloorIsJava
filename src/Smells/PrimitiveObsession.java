@@ -16,59 +16,49 @@ public class PrimitiveObsession {
 		this.files = fileList;
 		this.classes = classList;
 	}
-	public int countPrimitiveTypes() throws FileNotFoundException, IOException {
+	private int countPrimitiveTypes() throws FileNotFoundException, IOException {
 		int numOfPts = 0;
 		for(File f: files) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 			    for(String line; (line = br.readLine()) != null; ) {
-			        numOfPts += countInt(line);
-			        numOfPts += countDouble(line);
-			        numOfPts += countFloat(line);
-			        numOfPts += countString(line);
-			        numOfPts += countBool(line);
-			        numOfPts += countChar(line);
+			        if(line.contains(PrimitiveDataTypes.INT))
+			        	numOfPts++;
+			        else if(line.contains(PrimitiveDataTypes.DOUBLE))
+			        	numOfPts++;
+			        else if(line.contains(PrimitiveDataTypes.FLOAT))
+			        	numOfPts++;
+			        else if(line.contains(PrimitiveDataTypes.CHAR))
+			        	numOfPts++;
+			        else if(line.contains(PrimitiveDataTypes.STRING))
+			        	numOfPts++;
+			        else if(line.contains(PrimitiveDataTypes.BOOL))
+			        	numOfPts++;
 			    }
 			}
 		}
-		System.out.println(classes.toString());
 		return numOfPts;
 	}
 	
-	//helper methods
-	private int countInt(String line) {
-		int countInt= 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.INT.toLowerCase()) != -1 )
-			   countInt++;
-		return countInt;
-	}	
-	private int countDouble(String line){
-		int countDouble = 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.DOUBLE.toLowerCase()) != -1 )
-			countDouble++;
-		return countDouble;
+	private int countClassObjects() throws FileNotFoundException, IOException {
+		int numOfClassObj=0;
+		for(File f: files) {
+			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+			    for(String line; (line = br.readLine()) != null; ) {
+			        for(String c: classes) {
+			        	if((line.contains(c) && line.contains("new")) || line.contains(c+".")) {
+			        		numOfClassObj++;
+			        		break;
+			        	}
+			        }
+			    }
+			}
+		}
+		return numOfClassObj;
 	}
-	private int countFloat(String line){
-		int countFloat = 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.FLOAT.toLowerCase()) != -1 )
-			countFloat++;
-		return countFloat;
-	}
-	private int countString(String line){
-		int countString = 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.STRING.toLowerCase()) != -1 )
-			countString++;
-		return countString;
-	}
-	private int countBool(String line){
-		int countBool = 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.BOOL.toLowerCase()) != -1 )
-			countBool++;
-		return countBool;
-	}
-	private int countChar(String line){
-		int countChar = 0;
-		if (line.toLowerCase().indexOf(PrimitiveDataTypes.CHAR.toLowerCase()) != -1 )
-			countChar++;
-		return countChar;
+	
+	public void report() throws FileNotFoundException, IOException {
+		System.out.println("---------Primitve Obsession Report");
+		System.out.println("Primtive Types in project: "+ countPrimitiveTypes());
+		System.out.println("Class Obejcts in project: "+countClassObjects());
 	}
 }
