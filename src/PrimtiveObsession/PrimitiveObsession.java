@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+
 
 public class PrimitiveObsession implements PO{
 	
@@ -39,6 +41,7 @@ public class PrimitiveObsession implements PO{
 		return numOfPts;
 	}
 	
+	
 	public int countClassObjects() throws FileNotFoundException, IOException {
 		int numOfClassObj=0;
 		for(File f: files) {
@@ -61,4 +64,8 @@ public class PrimitiveObsession implements PO{
 		System.out.println("Primtive Types in project: "+ countPrimitiveTypes());
 		System.out.println("Class Obejcts in project: "+countClassObjects());
 	}
+
+
+	
+	
 }

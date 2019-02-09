@@ -1,14 +1,18 @@
 package GUI;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileSystemView;
+
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.awt.*;
 import java.util.*;
-import javax.swing.JPanel;
 
 import FileProcessing.FileHandler;
 import PrimtiveObsession.PrimitiveObsession;
@@ -53,7 +57,6 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		  System.out.println("-------Java Files filtered---------");
 		  //process the files and add to file list
 		  for ( Path p : pathList ) {
 			    FileHandler.addNewFile(p);
@@ -63,6 +66,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles, FileHandler.getClasses(FileHandler.uploadedFiles));
 		  try {
 			po.report();
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -79,6 +83,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 	public static void main(String s[]) {
 	    JFrame frame = new JFrame("");
 		JFileChooserUploader panel = new JFileChooserUploader();
+		
 		frame.addWindowListener(
 		  new WindowAdapter() {
 		    public void windowClosing(WindowEvent e) {
@@ -90,4 +95,6 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 	    frame.setSize(panel.getPreferredSize());
 	    frame.setVisible(true);
 	}
+	
+
 }
