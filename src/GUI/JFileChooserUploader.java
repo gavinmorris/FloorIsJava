@@ -67,12 +67,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 		  
 		  //Look into files and load them for Primitive Obsession smell test
 		  PrimitiveObsession po = new PrimitiveObsession();
-		  try {
-			po.report();
-			
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		  po.report();
 		}
 		else {
 		  System.out.println("No Selection ");
