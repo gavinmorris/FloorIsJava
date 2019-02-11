@@ -46,7 +46,6 @@ public class PrimitiveObsession implements PO{
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 			    for(String line; (line = br.readLine()) != null; ) {
 			        for(Class<?> c: classes) {
-			        	System.out.println(c.getSimpleName());
 			        	if((line.contains(c.getSimpleName()) && line.contains("new")) || line.contains(c.getSimpleName()+".")) {
 			        		numOfClassObj++;
 			        		break;
