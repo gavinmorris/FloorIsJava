@@ -8,16 +8,14 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import FileProcessing.FileHandler;
+
 
 public class PrimitiveObsession implements PO{
 	
-	private List<File> files;
-	private List<String> classes;
+	private List<File> files = FileHandler.uploadedFiles;
+	private List<Class<?>> classes = FileHandler.classes;
 	
-	public PrimitiveObsession(List<File> fileList,  List<String> classList) {
-		this.files = fileList;
-		this.classes = classList;
-	}
 	public int countPrimitiveTypes() throws FileNotFoundException, IOException {
 		int numOfPts = 0;
 		for(File f: files) {
@@ -47,8 +45,9 @@ public class PrimitiveObsession implements PO{
 		for(File f: files) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 			    for(String line; (line = br.readLine()) != null; ) {
-			        for(String c: classes) {
-			        	if((line.contains(c) && line.contains("new")) || line.contains(c+".")) {
+			        for(Class<?> c: classes) {
+			        	System.out.println(c.getSimpleName());
+			        	if((line.contains(c.getSimpleName()) && line.contains("new")) || line.contains(c.getSimpleName()+".")) {
 			        		numOfClassObj++;
 			        		break;
 			        	}

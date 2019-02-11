@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import FileProcessing.FileHandler;
 import PrimtiveObsession.PrimitiveObsession;
@@ -62,8 +63,10 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			    FileHandler.addNewFile(p);
 		  }
 		  
+		  FileHandler.classes = FileHandler.getClasses();
+		  
 		  //Look into files and load them for Primitive Obsession smell test
-		  PrimitiveObsession po = new PrimitiveObsession(FileHandler.uploadedFiles, FileHandler.getClasses(FileHandler.uploadedFiles));
+		  PrimitiveObsession po = new PrimitiveObsession();
 		  try {
 			po.report();
 			

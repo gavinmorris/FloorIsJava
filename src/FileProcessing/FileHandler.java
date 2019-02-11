@@ -9,6 +9,7 @@ import java.util.List;
 public class FileHandler {
 	
 	public static ArrayList<File> uploadedFiles = new ArrayList<File>();
+	public static ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 	public static void addNewFile(Path path){
 		if(isFileTypeJava(path.toString()))
 			uploadedFiles.add(new File(path.toString()));
@@ -20,10 +21,25 @@ public class FileHandler {
 			return false;
 		}
 	}
-	public static List<String> getClasses(List<File> files) {
-		List<String> classes = new ArrayList<String>();
-		for(File file: files) {
-			classes.add(file.getName().replace(".java", "").trim());
+	public static ArrayList<Class<?>> getClasses(){
+		List<String> classesName = new ArrayList<String>();
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+		for(File file: uploadedFiles) {
+			String tmp = file.getPath();
+			tmp = tmp.substring(tmp.indexOf("src")+4);
+			String className = tmp.replaceAll("/", ".");
+			classesName.add(className.replace(".java", "").trim());
+		}
+		for(String className: classesName) {
+			Class<?> cls;
+			try {
+				cls = Class.forName(className);
+				classes.add(cls);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		return classes;
 	}
