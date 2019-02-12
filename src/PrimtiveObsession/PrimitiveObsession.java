@@ -14,7 +14,6 @@ import FileProcessing.FileHandler;
 
 public class PrimitiveObsession implements PO{
 	
-	private List<File> files = FileHandler.uploadedFiles;
 	private List<Class<?>> classes = FileHandler.classes;
 
 	public void report() {
