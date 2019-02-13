@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="760de80a-7122-46fe-a26e-95f1e572cded" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/FileProcessing/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileProcessing/FileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/JFileChooserUploader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/JFileChooserUploader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PrimtiveObsession/PO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrimtiveObsession/PO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PrimtiveObsession/PrimitiveObsession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrimtiveObsession/PrimitiveObsession.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FileProcessing/FileHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+            <state relative-caret-position="154">
+              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
               <folding>
                 <element signature="e#729#737#0" expanded="true" />
               </folding>
@@ -216,7 +212,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.128" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.16" />
+      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.0848" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="3" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -233,7 +229,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.30786687" />
+      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.33812407" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -246,8 +242,8 @@
     <entry file="file://$PROJECT_DIR$/src/PrimtiveObsession/PrimitiveDataTypes.java" />
     <entry file="file://$PROJECT_DIR$/src/FileProcessing/FileHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="30" column="12" selection-start-line="30" selection-start-column="12" selection-end-line="30" selection-end-column="12" />
+        <state relative-caret-position="154">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
           <folding>
             <element signature="e#729#737#0" expanded="true" />
           </folding>

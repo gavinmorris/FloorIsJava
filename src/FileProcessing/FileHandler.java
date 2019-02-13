@@ -25,11 +25,11 @@ public class FileHandler {
         List<String> classesName = new ArrayList<String>();
         ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
         for(File file: uploadedFiles) {
-            String tmp = file.getPath();
-            tmp = tmp.substring(tmp.indexOf("src")+4);
-            String className = tmp.replaceAll("\\\\", "/");
-            className = className.replaceAll("/", ".");
-            classesName.add(className.replace(".java", "").trim());
+            String path = file.getPath();
+            path = path.substring(path.indexOf("src")+4);
+            path = path.replaceAll("\\\\", "/");
+            path = path.replaceAll("/", ".");
+            classesName.add(path.replace(".java", "").trim());
         }
         System.out.println(classesName.toString());
         for(String className: classesName) {
