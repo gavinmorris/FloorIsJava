@@ -1,9 +1,9 @@
 # FloorIsJava
 
 ## Team Members
-* Aidan MacNeill
+* Aidan Mac Neill
 * Jem Cairns
-* Shanely Shaw
+* Shanley Shaw
 * Gavin Morris
 
 ## Running Locally
