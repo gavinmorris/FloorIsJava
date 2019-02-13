@@ -27,8 +27,8 @@ public class FileHandler {
         for(File file: uploadedFiles) {
             String tmp = file.getPath();
             tmp = tmp.substring(tmp.indexOf("src")+4);
-            String className = tmp.replaceAll("/", "\\\\");
-            className = tmp.replaceAll("\\\\", ".");
+            String className = tmp.replaceAll("\\\\", "/");
+            className = className.replaceAll("/", ".");
             classesName.add(className.replace(".java", "").trim());
         }
         System.out.println(classesName.toString());
