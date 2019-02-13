@@ -12,7 +12,7 @@ import java.util.List;
 import FileProcessing.FileHandler;
 
 public class InappropriateIntimacy implements InterfaceII{
-	
+
 	private List<Class<?>> classes = FileHandler.classes;
 	private List<File> files = FileHandler.uploadedFiles;
 
@@ -20,7 +20,7 @@ public class InappropriateIntimacy implements InterfaceII{
 	@Override
 	public void report() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -47,23 +47,23 @@ public class InappropriateIntimacy implements InterfaceII{
 		// TODO Auto-generated method stub
 	}
 
-	
+
 	public boolean isMethodUsed(String className, String methodName) {
 		boolean possible = false;
 		boolean used = false;
 		for(File f: files) {
 			if(!f.getName().contains(className)) {
 				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-						for(String line; (line = br.readLine()) != null; ) {
-						    if(line.contains(className)) {
-						    	possible= true;
-						    }
-						    if(possible) {
-						    	if(line.contains(methodName)) {
-						    		used = true;
-						    	}
-						    }
+					for(String line; (line = br.readLine()) != null; ) {
+						if(line.contains(className)) {
+							possible= true;
 						}
+						if(possible) {
+							if(line.contains(methodName)) {
+								used = true;
+							}
+						}
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -72,6 +72,6 @@ public class InappropriateIntimacy implements InterfaceII{
 		}
 		return used;
 	}
-	
-	
+
+
 }
