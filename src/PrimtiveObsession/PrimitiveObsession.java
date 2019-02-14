@@ -10,28 +10,52 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import FileProcessing.FileHandler;
+import General.Literals;
 
 
 public class PrimitiveObsession implements PO{
 
-    private List<Class<?>> classes = FileHandler.classes;
+    private List<String> classes = FileHandler.classes;
 
     public void report() {
-        int primCount = 0;
-        int notPrimCount = 0;
-        for(Class<?> c : classes) {
-            for(Field f: c.getFields()) {
-                if(f.getType().isPrimitive()) {
-                    primCount++;
-                }else {
-                    notPrimCount++;
-                }
-            }
-        }
-        System.out.println("---------Primitve Obsession Report");
-        System.out.println("Primtive Types in project: "+ primCount);
-        System.out.println("Class Obejcts in project: "+notPrimCount);
+     System.out.print(primitiveCount());
     }
 
+    public int primitiveCount() {
+    	int count = 0;
+    	for(File f : FileHandler.uploadedFiles) {
+    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+    		    for(String line; (line = br.readLine()) != null; ) {
+    		        if(line.contains(PrimtiveDataTypes.BOOLEAN) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.BYTE) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.CHAR) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.DOUBLE) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.FLOAT) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.INT) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.LONG) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		        else if(line.contains(PrimtiveDataTypes.SHORT) && line.contains(Literals.EQUALS)) {
+    		        	count++;
+    		        }
+    		    }
+    		} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	return count;
+    }
 
 }

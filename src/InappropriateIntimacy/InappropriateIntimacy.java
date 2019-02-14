@@ -13,7 +13,7 @@ import FileProcessing.FileHandler;
 
 public class InappropriateIntimacy implements InterfaceII{
 
-	private List<Class<?>> classes = FileHandler.classes;
+	private List<String> classes = FileHandler.classes;
 	private List<File> files = FileHandler.uploadedFiles;
 
 
@@ -25,21 +25,7 @@ public class InappropriateIntimacy implements InterfaceII{
 
 	@Override
 	public void getPublicMethods() {
-		ArrayList<String> iAM = new ArrayList<String>();
-		for(Class<?> c : classes) {
-			for(Method m: c.getDeclaredMethods()) {
-				if(Modifier.isPublic(m.getModifiers())){
-					if(!isMethodUsed(c.getSimpleName(), m.getName())) {
-						iAM.add(m.getName());
-					}
-				}
-			}
-		}
-		System.out.println("-----------Inappropriate Intimacy Report----------");
-		System.out.println("The following methods should be private:");
-		for(String m : iAM) {
-			System.out.println(m);
-		}
+
 	}
 
 	@Override
@@ -49,28 +35,7 @@ public class InappropriateIntimacy implements InterfaceII{
 
 
 	public boolean isMethodUsed(String className, String methodName) {
-		boolean possible = false;
-		boolean used = false;
-		for(File f: files) {
-			if(!f.getName().contains(className)) {
-				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-					for(String line; (line = br.readLine()) != null; ) {
-						if(line.contains(className)) {
-							possible= true;
-						}
-						if(possible) {
-							if(line.contains(methodName)) {
-								used = true;
-							}
-						}
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
-		return used;
+		return false;
 	}
 
 
