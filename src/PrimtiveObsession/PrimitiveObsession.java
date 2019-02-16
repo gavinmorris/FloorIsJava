@@ -19,6 +19,7 @@ public class PrimitiveObsession implements PO{
 
     public void report() {
     	checkLines();
+    	System.out.println("-------Primitve Obsession.---------");
 	    System.out.println("Primitive Data Types: "+primitiveDataTypes);
 	    System.out.println("Class Objects: "+ classObjects);
     }

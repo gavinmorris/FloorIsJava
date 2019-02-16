@@ -23,10 +23,19 @@ public class InappropriateIntimacy {
 		getPublicMethods();
     	fillHashTable();
     	checkIfUsed();
-    	System.out.println(methodUse.toString());
+    	System.out.println("-------Public Methods to be made private.---------");
+    	print();
 	}
 	
-	public void getPublicMethods() {
+	private void print() {
+		for (Map.Entry<String, Integer> entry : methodUse.entrySet()){
+			if(entry.getValue() <= 1) {
+				System.out.println(entry.getKey());
+			}
+		}
+	}
+	
+	private void getPublicMethods() {
 		for(File f : FileHandler.uploadedFiles) {
     		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
     		    for(String line; (line = br.readLine()) != null; ) {
@@ -38,7 +47,7 @@ public class InappropriateIntimacy {
     	}
 	}
 
-	public void checkLine(String line) {
+	private void checkLine(String line) {
 		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET))) {
 			String className = getMethodName(line);
 			methods.add(className);
@@ -58,7 +67,7 @@ public class InappropriateIntimacy {
 
 	
 	
-	public boolean checkIfUsed() {
+	private boolean checkIfUsed() {
 		for(File f : FileHandler.uploadedFiles) {
     		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
     		    for(String line; (line = br.readLine()) != null; ) {
