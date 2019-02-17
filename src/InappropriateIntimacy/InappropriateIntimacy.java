@@ -16,7 +16,11 @@ import General.Literals;
 public class InappropriateIntimacy {
 
 	private List<String> methods = new ArrayList<String>();
+	private List<String> variables = new ArrayList<String>();
+
 	Map<String, Integer> methodUse = new Hashtable<String, Integer>();
+	Map<String, Integer> variableUse = new Hashtable<String, Integer>();
+
 	
 
 	public void report() {
@@ -29,6 +33,11 @@ public class InappropriateIntimacy {
 	
 	private void print() {
 		for (Map.Entry<String, Integer> entry : methodUse.entrySet()){
+			if(entry.getValue() <= 1) {
+				System.out.println(entry.getKey());
+			}
+		}
+		for (Map.Entry<String, Integer> entry : variableUse.entrySet()){
 			if(entry.getValue() <= 1) {
 				System.out.println(entry.getKey());
 			}
@@ -49,9 +58,18 @@ public class InappropriateIntimacy {
 
 	private void checkLine(String line) {
 		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET))) {
-			String className = getMethodName(line);
-			methods.add(className);
+			String methodName = getMethodName(line);
+			methods.add(methodName);
 		}
+		else if(line.contains(Literals.PUBLIC) && line.contains(Literals.EQUALS)) {
+			String varName = getVariableName(line);
+			variables.add(varName);
+		}
+	}
+
+	private String getVariableName(String line) {
+		String[] methodName = line.substring(0,line.indexOf(Literals.EQUALS)).split(" ");
+		return methodName[methodName.length-1].trim();
 	}
 
 	private String getMethodName(String line) {
@@ -63,9 +81,10 @@ public class InappropriateIntimacy {
 		for(String m: methods) {
 			methodUse.put(m, 0);
 		}
-	}
-
-	
+		for(String v: variables) {
+			variableUse.put(v, 0);
+		}
+	}	
 	
 	private boolean checkIfUsed() {
 		for(File f : FileHandler.uploadedFiles) {
@@ -88,8 +107,13 @@ public class InappropriateIntimacy {
 				break;
 			}
 		}
-		
-		
+		for(String v: variables) {
+			if(line.contains(v)) {
+				int val = variableUse.containsKey(v) ? variableUse.get(v) : 0;
+				variableUse.put(v, val+1);
+				break;
+			}
+		}
 	}
 
 
