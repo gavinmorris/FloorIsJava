@@ -57,7 +57,7 @@ public class InappropriateIntimacy {
 	}
 
 	private void checkLine(String line) {
-		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET))) {
+		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) && !(line.contains(Literals.GREATER_THAN)&&line.contains(Literals.LESS_THAN))) {
 			String methodName = getMethodName(line);
 			methods.add(methodName);
 		}
@@ -104,14 +104,12 @@ public class InappropriateIntimacy {
 			if(line.contains(m)) {
 				int val = methodUse.containsKey(m) ? methodUse.get(m) : 0;
 				methodUse.put(m, val+1);
-				break;
 			}
 		}
 		for(String v: variables) {
 			if(line.contains(v)) {
 				int val = variableUse.containsKey(v) ? variableUse.get(v) : 0;
 				variableUse.put(v, val+1);
-				break;
 			}
 		}
 	}
