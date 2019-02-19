@@ -66,19 +66,18 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			}
 
 			FileHandler.classes = FileHandler.getClasses();
-<<<<<<< HEAD
+
 //			InappropriateIntimacy obj = new InappropriateIntimacy();
 //			obj.getPublicMethods();
 //			//Look into files and load them for Primitive Obsession smell test
 //			PrimitiveObsession po = new PrimitiveObsession();
 //			po.report();
-=======
-			InappropriateIntimacy obj = new InappropriateIntimacy();
-			obj.report();
-			//Look into files and load them for Primitive Obsession smell test
-			PrimitiveObsession po = new PrimitiveObsession();
-			po.report();
->>>>>>> 75c54eda14decbb2b07341a6b4dedc1e7e2b24f5
+//
+//			InappropriateIntimacy obj = new InappropriateIntimacy();
+//			obj.report();
+//			//Look into files and load them for Primitive Obsession smell test
+//			PrimitiveObsession po = new PrimitiveObsession();
+//			po.report();
 		}
 		else {
 			System.out.println("No Selection ");
