@@ -10,12 +10,18 @@ public class DuplicatedCode extends JButton implements ActionListener {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO
+                report();
             }
         });
     }
 
     public void actionPerformed(ActionEvent e) {
         //TODO
+    }
+
+    public void report(){
+        System.out.println("\n\n ----- Duplicated Code ----- ");
+
+
     }
 }
