@@ -1,5 +1,7 @@
 package PrimtiveObsession;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,18 +14,33 @@ import java.util.List;
 import FileProcessing.FileHandler;
 import General.Literals;
 
+import javax.swing.*;
 
-public class PrimitiveObsession implements PO{
+
+public class PrimitiveObsession extends JButton implements PO, ActionListener {
 
     private List<String> classes = FileHandler.classes;
+	private int primitiveDataTypes= 0;
+	private int classObjects = 0;
+
+	public PrimitiveObsession(){
+		this.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				report();
+			}
+		});
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		report();
+	}
 
     public void report() {
     	checkLines();
 	    System.out.println("Primitive Data Types: "+primitiveDataTypes);
 	    System.out.println("Class Objects: "+ classObjects);
     }
-    private int primitiveDataTypes= 0;
-    private int classObjects = 0;
     
     public void countPDT() {
     	primitiveDataTypes++;
@@ -80,6 +97,9 @@ public class PrimitiveObsession implements PO{
     	}
     	return classDefFound;
     }
+
+
+
     
 
 }

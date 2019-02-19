@@ -29,9 +29,10 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 	String choosertitle;
 
 	public JFileChooserUploader() {
+		this.setSize(500, 100);
 		go = new JButton("Upload Project");
 		go.addActionListener(this);
-		add(go);
+		this.add(go);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -65,11 +66,11 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			}
 
 			FileHandler.classes = FileHandler.getClasses();
-			InappropriateIntimacy obj = new InappropriateIntimacy();
-			obj.getPublicMethods();
-			//Look into files and load them for Primitive Obsession smell test
-			PrimitiveObsession po = new PrimitiveObsession();
-			po.report();
+//			InappropriateIntimacy obj = new InappropriateIntimacy();
+//			obj.getPublicMethods();
+//			//Look into files and load them for Primitive Obsession smell test
+//			PrimitiveObsession po = new PrimitiveObsession();
+//			po.report();
 		}
 		else {
 			System.out.println("No Selection ");
@@ -77,23 +78,7 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 	}
 
 	public Dimension getPreferredSize(){
-		return new Dimension(200, 200);
-	}
-
-	public static void main(String s[]) {
-		JFrame frame = new JFrame("");
-		JFileChooserUploader panel = new JFileChooserUploader();
-
-		frame.addWindowListener(
-				new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						System.exit(0);
-					}
-				}
-		);
-		frame.getContentPane().add(panel,"Center");
-		frame.setSize(panel.getPreferredSize());
-		frame.setVisible(true);
+		return new Dimension(500, 100);
 	}
 
 

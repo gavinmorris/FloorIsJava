@@ -1,5 +1,7 @@
 package InappropriateIntimacy;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,11 +13,25 @@ import java.util.List;
 
 import FileProcessing.FileHandler;
 
-public class InappropriateIntimacy implements InterfaceII{
+import javax.swing.*;
+
+public class InappropriateIntimacy extends JButton implements InterfaceII, ActionListener {
 
 	private List<String> classes = FileHandler.classes;
 	private List<File> files = FileHandler.uploadedFiles;
 
+	public InappropriateIntimacy(){
+		this.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				report();
+			}
+		});
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		report();
+	}
 
 	@Override
 	public void report() {
