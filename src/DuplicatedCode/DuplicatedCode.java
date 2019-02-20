@@ -46,56 +46,116 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
         for(File f : FileHandler.uploadedFiles) {
 //            String s = new String();
-            try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-                br.mark(1000);
-                long numLines=0;
-                while(br.readLine() != null){
+            try(BufferedReader br0 = new BufferedReader(new FileReader(f))) {
+                br0.mark(1000);
+                long numLines=1;
+                while(br0.readLine() != null){
                     numLines++;
                 }
+                br0.close();
 //                Stream brLength = br.lines();
-                br.reset();
-                System.out.println("result: " + f.getName() + ": " + numLines);
+                System.out.println("\n\nClass: " + f.getName() + ": " + numLines);
 
-                for(int i=0; i<numLines/2; i++){
-                    while(br.readLine() == null){
+                int bigMarkIndex=0;
+                for(int i=0; i<numLines-6; i++){
+                    int markIndex=0;
+                    BufferedReader br = new BufferedReader(new FileReader(f));
+                    for(int j=0; j<bigMarkIndex; j++){
+                        br.readLine();
                     }
                     br.mark(1000);
-                    List<String> lines = new ArrayList<>();
-                    for(int j=0; j<2; j++){
-                        String tempLine = br.readLine();
-                        if(tempLine == null){
-                            j--;
-                        }
-                        else{
-                            lines.add(tempLine);
-                        }
-                        System.out.println("wow" + j + ": " + lines.get(j));
-                    }
-                    for(int k=0; k<numLines/lines.size(); k++){
-                        int numDuplicateLines=0;
-                        for(int j=0; j<2; j++){
-                            System.out.println("dude " + lines.get(j));
-                            String tempLine = br.readLine();
-                            if(tempLine != null){
-                                if(lines.get(j).equals(tempLine)){
-                                    System.out.println("Dupped");
-                                    numDuplicateLines++;
-                                }
-                            }
-                            else{
-                                j--;
-                            }
-                        }
-                        if(numDuplicateLines == lines.size()){
-                            for(int t=0; t<numDuplicateLines; t++){
-                                System.out.println("dup " + t + ": " + lines.get(t));
-                            }
-                            System.out.println();
-                        }
+
+                    String tmp = br.readLine().trim();
+                    while(tmp.equals("") || tmp.equals("{") || tmp.equals("}")){
+                        br.mark(1000);
+                        tmp = br.readLine().trim();
+                        bigMarkIndex++;
+                        i++;
                     }
                     br.reset();
+
+                    List<String> lines = new ArrayList<>();
+                    lines.add(br.readLine().trim());
+                    String line = br.readLine().trim();
+                    markIndex+=2;
+                    while(line.equals("") || line.equals("{") || line.equals("}")){
+                        line = br.readLine().trim();
+                        markIndex++;
+                    }
+                    lines.add(line);
+
+                    br.mark(1000);
+
+//                    System.out.println("\nset lines: " + lines.get(0));
+//                    System.out.println("set lines: " + lines.get(1));
+//
+//                    System.out.println("num lines to check: " + (numLines-bigMarkIndex-markIndex-1));
+                    for(int k=0; k<numLines-bigMarkIndex-markIndex-1; k++){
+                        int numDuplicateLines=0;
+//                        System.out.println(k);
+
+//                        for(int j=0; j<k; j++){
+//                            br.readLine();
+//                        }
+
+
+                        String tempLine = br.readLine().trim();
+                        while(tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")){
+                            k++;
+//                            System.out.println(k);
+                            if(k >= (numLines-bigMarkIndex-markIndex-1)){
+                                break;
+                            }
+                            else {
+                                tempLine = br.readLine().trim();
+                            }
+                        }
+
+                        if(k < (numLines-bigMarkIndex-markIndex-1)) {
+
+//                            System.out.println("k: " + k);
+//                            System.out.println("curr line 0: " + tempLine);
+
+                            br.mark(1000);
+
+                            if(lines.get(0).equals(tempLine)) {
+//                                System.out.println("Dupped");
+                                numDuplicateLines++;
+                                endLoop:
+                                for(int j = 1; j < lines.size(); j++) {
+                                    tempLine = br.readLine().trim();
+                                    int num=0;
+                                    while (tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")) {
+                                        num++;
+                                        //eeek
+                                        if(num+k < (numLines-bigMarkIndex-markIndex-1)){
+                                            tempLine = br.readLine().trim();
+                                        }
+                                        else{
+                                            break endLoop;
+                                        }
+                                    }
+//                                    System.out.println("curr line " + j + "; " + tempLine);
+
+                                    if(lines.get(j).equals(tempLine)) {
+//                                        System.out.println("Dupped");
+                                        numDuplicateLines++;
+                                    }
+                                }
+
+                                if(numDuplicateLines == lines.size()) {
+                                    for (int t = 0; t < numDuplicateLines; t++) {
+                                        System.out.println("dup line " + t + ": " + lines.get(t));
+                                    }
+                                    System.out.println();
+                                }
+                            }
+                        }
+                        br.reset();
+                    }
+                    bigMarkIndex++;
+                    br.close();
                 }
-                br.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

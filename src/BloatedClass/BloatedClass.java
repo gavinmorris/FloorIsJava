@@ -17,5 +17,13 @@ public class BloatedClass extends JButton implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         //TODO
+        int k=0;
+        k++;
+        k++;
+        k++;
+        k++;
     }
+
+    int h;
+
 }
