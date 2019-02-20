@@ -53,13 +53,12 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     numLines++;
                 }
                 br0.close();
-//                Stream brLength = br.lines();
                 System.out.println("\n\nClass: " + f.getName() + ": " + numLines);
 
                 int bigMarkIndex=0;
                 bigLoop:
                 for(int i=0; i<numLines-6; i++){
-                    int markIndex=0;
+                    //get file length
                     BufferedReader br = new BufferedReader(new FileReader(f));
                     for(int j=0; j<bigMarkIndex; j++){
                         br.readLine();
@@ -75,14 +74,18 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     }
                     br.reset();
 
+                    List<Integer> currLinesIndex = new ArrayList<>();
+                    currLinesIndex.add(bigMarkIndex);
+
+                    int currMarkIndex=0;
                     List<String> lines = new ArrayList<>();
                     lines.add(br.readLine().trim());
                     String line = br.readLine().trim();
-                    markIndex+=2;
+                    currMarkIndex+=2;
                     while(line.equals("") || line.equals("{") || line.equals("}")){
-                        if(i+markIndex+bigMarkIndex < numLines-6) {
+                        if(i+currMarkIndex < numLines-6) {
                             line = br.readLine().trim();
-                            markIndex++;
+                            currMarkIndex++;
                         }
                         else{
                             break bigLoop;
@@ -92,24 +95,19 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
                     br.mark(1000);
 
-//                    System.out.println("\nset lines: " + lines.get(0));
-//                    System.out.println("set lines: " + lines.get(1));
-//
-//                    System.out.println("num lines to check: " + (numLines-bigMarkIndex-markIndex-1));
-                    for(int k=0; k<numLines-bigMarkIndex-markIndex-1; k++){
+
+//                    System.out.println("\nchecking line 1: " + lines.get(0));
+//                    System.out.println("checking line 2: " + lines.get(1));
+//                    System.out.println("num lines to check: " + (numLines-bigMarkIndex-currMarkIndex-1));
+
+                    for(int k=0; k<numLines-bigMarkIndex-currMarkIndex-1; k++){
                         int numDuplicateLines=0;
 //                        System.out.println(k);
-
-//                        for(int j=0; j<k; j++){
-//                            br.readLine();
-//                        }
-
-
                         String tempLine = br.readLine().trim();
                         while(tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")){
                             k++;
 //                            System.out.println(k);
-                            if(k >= (numLines-bigMarkIndex-markIndex-1)){
+                            if(k >= (numLines-bigMarkIndex-currMarkIndex-1)){
                                 break;
                             }
                             else {
@@ -117,7 +115,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                             }
                         }
 
-                        if(k < (numLines-bigMarkIndex-markIndex-1)) {
+                        if(k < (numLines-bigMarkIndex-currMarkIndex-1)) {
 
 //                            System.out.println("k: " + k);
 //                            System.out.println("curr line 0: " + tempLine);
@@ -125,6 +123,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                             br.mark(1000);
 
                             if(lines.get(0).equals(tempLine)) {
+                                int duplicatedLineIndex=0;
 //                                System.out.println("Dupped");
                                 numDuplicateLines++;
                                 endLoop:
@@ -133,9 +132,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                     int num=1;
                                     while (tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")) {
                                         num++;
-                                        //eeek
-                                        System.out.println(num + ":num k:" + k + " else: " + (numLines-bigMarkIndex-markIndex-1));
-                                        if(num+k < (numLines-bigMarkIndex-markIndex-1)){
+//                                        System.out.println(num + ":num k:" + k + " else: " + (numLines-bigMarkIndex-currMarkIndex-1));
+                                        if(num+k < (numLines-bigMarkIndex-currMarkIndex-1)){
                                             tempLine = br.readLine().trim();
                                         }
                                         else{
@@ -151,9 +149,11 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                 }
 
                                 if(numDuplicateLines == lines.size()) {
-                                    for (int t = 0; t < numDuplicateLines; t++) {
-                                        System.out.println("dup line " + t + ": " + lines.get(t));
-                                    }
+                                    System.out.println("Duplicated lines: ");
+//                                    for (int t = 0; t < numDuplicateLines; t++) {
+                                        System.out.println((bigMarkIndex+1) + ": " + lines.get(0));
+                                        System.out.println((bigMarkIndex+currMarkIndex) + ": " + lines.get(1));
+//                                    }
                                     System.out.println();
                                 }
                             }
