@@ -57,6 +57,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 System.out.println("\n\nClass: " + f.getName() + ": " + numLines);
 
                 int bigMarkIndex=0;
+                bigLoop:
                 for(int i=0; i<numLines-6; i++){
                     int markIndex=0;
                     BufferedReader br = new BufferedReader(new FileReader(f));
@@ -79,8 +80,13 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     String line = br.readLine().trim();
                     markIndex+=2;
                     while(line.equals("") || line.equals("{") || line.equals("}")){
-                        line = br.readLine().trim();
-                        markIndex++;
+                        if(i+markIndex+bigMarkIndex < numLines-6) {
+                            line = br.readLine().trim();
+                            markIndex++;
+                        }
+                        else{
+                            break bigLoop;
+                        }
                     }
                     lines.add(line);
 
@@ -124,10 +130,11 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                 endLoop:
                                 for(int j = 1; j < lines.size(); j++) {
                                     tempLine = br.readLine().trim();
-                                    int num=0;
+                                    int num=1;
                                     while (tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")) {
                                         num++;
                                         //eeek
+                                        System.out.println(num + ":num k:" + k + " else: " + (numLines-bigMarkIndex-markIndex-1));
                                         if(num+k < (numLines-bigMarkIndex-markIndex-1)){
                                             tempLine = br.readLine().trim();
                                         }
