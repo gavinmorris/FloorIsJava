@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +18,13 @@ import javax.swing.*;
 
 public class InappropriateIntimacy extends JButton implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
 	private List<String> methods = new ArrayList<String>();
 	private List<String> variables = new ArrayList<String>();
 
+	private List<Triple<String,String, Integer>> mTriples = new ArrayList<Triple<String,String, Integer>>();
+
+	
 	Map<String, Integer> methodUse = new Hashtable<String, Integer>();
 	Map<String, Integer> variableUse = new Hashtable<String, Integer>();
 
@@ -37,7 +40,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		report();
 	}
-
 
 	public void report() {
 		getPublicMethods();
@@ -64,7 +66,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		for(File f : FileHandler.uploadedFiles) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 				for(String line; (line = br.readLine()) != null; ) {
-					checkLine(line);
+					checkLine(line, FileHandler.removeExtension(f.getName()));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -72,10 +74,12 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		}
 	}
 
-	private void checkLine(String line) {
+	private void checkLine(String line, String fileName) {
 		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) && !(line.contains(Literals.GREATER_THAN)&&line.contains(Literals.LESS_THAN))) {
 			String methodName = getMethodName(line);
 			methods.add(methodName);
+			Triple<String, String, Integer> cmp = new Triple<String, String, Integer>(methodName, fileName,0);
+			mTriples.add(cmp);
 		}
 		else if(line.contains(Literals.PUBLIC) && line.contains(Literals.EQUALS)) {
 			String varName = getVariableName(line);
@@ -106,7 +110,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		for(File f : FileHandler.uploadedFiles) {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 				for(String line; (line = br.readLine()) != null; ) {
-					processLine(line);
+					processLine(line, FileHandler.removeExtension(f.getName()));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -115,11 +119,10 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		return false;
 	}
 
-	private void processLine(String line) {
+	private void processLine(String line, String fileName) {
 		for(String m: methods) {
 			if(line.contains(m)) {
-				int val = methodUse.containsKey(m) ? methodUse.get(m) : 0;
-				methodUse.put(m, val+1);
+				incrementValue(m, fileName);
 			}
 		}
 		for(String v: variables) {
@@ -130,5 +133,15 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		}
 	}
 
+	private void incrementValue(String m, String className) {
+		for(Triple<String, String, Integer> t :mTriples) {
+			if(t.getClassName() == className && t.getMethodName() == m ) {
+				t.setOcurrence(t.getOcurrence()+1);
+			}
+		}
+		
+	}
+
+	
 
 }
