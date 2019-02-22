@@ -24,10 +24,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 
 	private List<Triple<String,String, Integer>> mTriples = new ArrayList<Triple<String,String, Integer>>();
 
-	
-	Map<String, Integer> methodUse = new Hashtable<String, Integer>();
-	Map<String, Integer> variableUse = new Hashtable<String, Integer>();
-
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
 			@Override
@@ -43,21 +39,15 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 
 	public void report() {
 		getPublicMethods();
-		fillHashTable();
 		checkIfUsed();
 		System.out.println("-------Public Methods to be made private.---------");
 		print();
 	}
 
 	private void print() {
-		for (Map.Entry<String, Integer> entry : methodUse.entrySet()){
-			if(entry.getValue() <= 1) {
-				System.out.println(entry.getKey());
-			}
-		}
-		for (Map.Entry<String, Integer> entry : variableUse.entrySet()){
-			if(entry.getValue() <= 1) {
-				System.out.println(entry.getKey());
+		for(Triple<String,String, Integer> t: mTriples) {
+			if(t.getOcurrence() <= 1) {
+				System.out.println(t.getClassName()+"\t\t"+t.getMethodName()+"\t\t"+t.getOcurrence());
 			}
 		}
 	}
@@ -77,14 +67,30 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private void checkLine(String line, String fileName) {
 		if(line.contains(Literals.PUBLIC) && (line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) && !(line.contains(Literals.GREATER_THAN)&&line.contains(Literals.LESS_THAN))) {
 			String methodName = getMethodName(line);
-			methods.add(methodName);
-			Triple<String, String, Integer> cmp = new Triple<String, String, Integer>(methodName, fileName,0);
-			mTriples.add(cmp);
+			if(!exists(methodName, fileName)) {
+				Triple<String, String, Integer> cmp = new Triple<String, String, Integer>(fileName, methodName,0);
+				mTriples.add(cmp);
+				methods.add(methodName);
+			}
 		}
 		else if(line.contains(Literals.PUBLIC) && line.contains(Literals.EQUALS)) {
 			String varName = getVariableName(line);
-			variables.add(varName);
+			if(!exists(varName, fileName)) {
+				Triple<String, String, Integer> cmp = new Triple<String, String, Integer>(fileName, varName,0);
+				mTriples.add(cmp);
+				variables.add(varName);
+			}
 		}
+	}
+
+	private boolean exists(String methodName, String fileName) {
+		for(Triple<String, String, Integer> t :mTriples) {
+			if(t.getClassName().equals(fileName) && t.getMethodName().equals(methodName)) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 
 	private String getVariableName(String line) {
@@ -95,15 +101,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private String getMethodName(String line) {
 		String[] methodName = line.substring(0,line.indexOf(Literals.O_BRACKET)).split(" ");
 		return methodName[methodName.length-1].trim();
-	}
-
-	private void fillHashTable() {
-		for(String m: methods) {
-			methodUse.put(m, 0);
-		}
-		for(String v: variables) {
-			variableUse.put(v, 0);
-		}
 	}
 
 	private boolean checkIfUsed() {
@@ -122,20 +119,19 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private void processLine(String line, String fileName) {
 		for(String m: methods) {
 			if(line.contains(m)) {
-				incrementValue(m, fileName);
+				incrementValue(m);
 			}
 		}
 		for(String v: variables) {
 			if(line.contains(v)) {
-				int val = variableUse.containsKey(v) ? variableUse.get(v) : 0;
-				variableUse.put(v, val+1);
+				incrementValue(v);
 			}
 		}
 	}
 
-	private void incrementValue(String m, String className) {
+	private void incrementValue(String m) {
 		for(Triple<String, String, Integer> t :mTriples) {
-			if(t.getClassName() == className && t.getMethodName() == m ) {
+			if(t.getMethodName().equals(m)) {
 				t.setOcurrence(t.getOcurrence()+1);
 			}
 		}

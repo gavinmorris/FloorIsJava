@@ -4,11 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import FileProcessing.FileHandler;
@@ -19,7 +16,8 @@ import javax.swing.*;
 
 public class PrimitiveObsession extends JButton implements PO, ActionListener {
 
-    private List<String> classes = FileHandler.classes;
+	private static final long serialVersionUID = 1L;
+	private List<String> classes = FileHandler.classes;
 	private int primitiveDataTypes= 0;
 	private int classObjects = 0;
 
