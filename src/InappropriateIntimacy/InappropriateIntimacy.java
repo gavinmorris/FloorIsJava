@@ -47,7 +47,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private void print() {
 		for(Triple<String,String, Integer> t: mTriples) {
 			if(t.getOcurrence() <= 1) {
-				System.out.println(t.getClassName()+"\t\t"+t.getMethodName()+"\t\t"+t.getOcurrence());
+				System.out.println(t.getMethodName());
 			}
 		}
 	}
