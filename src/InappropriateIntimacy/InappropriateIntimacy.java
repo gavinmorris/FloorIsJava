@@ -135,7 +135,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 				t.setOcurrence(t.getOcurrence()+1);
 			}
 		}
-		
 	}
 
 	
