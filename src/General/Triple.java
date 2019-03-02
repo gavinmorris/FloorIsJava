@@ -1,4 +1,4 @@
-package InappropriateIntimacy;
+package General;
 
 public class Triple<ClassName,MethodName,Occurrence> {
     private ClassName b;

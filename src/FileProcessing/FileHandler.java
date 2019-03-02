@@ -33,10 +33,9 @@ public class FileHandler {
     	return fileName.replace(".java", "").trim();
     }
     
-	public String getClassObject(String line, String className) {
+	public static String getClassObject(String line, String className) {
 		String[] strArr = line.substring(line.indexOf(className)).split(" ");
 		return strArr[1].trim();
-		
 	}
 
 }

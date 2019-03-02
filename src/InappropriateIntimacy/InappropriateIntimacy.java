@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import FileProcessing.FileHandler;
 import General.Literals;
+import General.Pair;
+import General.Triple;
 
 import javax.swing.*;
 
@@ -21,8 +21,10 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private List<String> methods = new ArrayList<String>();
 	private List<String> variables = new ArrayList<String>();
+	private List<String> objects = new ArrayList<String>();
 
 	private List<Triple<String,String, Integer>> mTriples = new ArrayList<Triple<String,String, Integer>>();
+	private List<Pair<String, String>> oPair = new ArrayList<Pair<String, String>>();
 
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
@@ -39,6 +41,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 
 	public void report() {
 		getPublicMethods();
+		System.out.println(objects.toString());
 		checkIfUsed();
 		System.out.println("-------Public Methods to be made private.---------");
 		print();
@@ -47,7 +50,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private void print() {
 		for(Triple<String,String, Integer> t: mTriples) {
 			if(t.getOcurrence() <= 1) {
-				System.out.println(t.getMethodName());
+				System.out.println(t.getClassName()+" : "+t.getMethodName());
 			}
 		}
 	}
@@ -57,9 +60,18 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 				for(String line; (line = br.readLine()) != null; ) {
 					checkLine(line, FileHandler.removeExtension(f.getName()));
+					getClassObjects(line);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void getClassObjects(String line) {
+		for(String className: FileHandler.classes) {
+			if(line.contains(className) && line.contains("new") && line.contains(Literals.EQUALS)) {
+				oPair.add(new Pair<String, String>(className, FileHandler.getClassObject(line, className)));
 			}
 		}
 	}
@@ -90,7 +102,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 			}
 		}
 		return false;
-		
 	}
 
 	private String getVariableName(String line) {
@@ -119,7 +130,11 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private void processLine(String line, String fileName) {
 		for(String m: methods) {
 			if(line.contains(m)) {
-				incrementValue(m);
+				for(Pair<String,String> p: oPair) {
+					if(fileName.equals(p.getClassName()) && getObjectName(line, m).equals(p.getObjectName())) {
+						incrementValue(m);
+					}
+				}
 			}
 		}
 		for(String v: variables) {
@@ -129,6 +144,17 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		}
 	}
 
+	private String getObjectName(String line, String methodName) {
+		String objectName= null;
+		String str[] = line.split(" ");
+		for(String l: str) {
+			if(l.contains(methodName)) {
+				objectName = l.replace("."+methodName,"");
+			}
+		}
+		return objectName.trim();
+	}
+
 	private void incrementValue(String m) {
 		for(Triple<String, String, Integer> t :mTriples) {
 			if(t.getMethodName().equals(m)) {
@@ -136,7 +162,5 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 			}
 		}
 	}
-
-	
 
 }
