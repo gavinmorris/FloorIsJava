@@ -2,15 +2,13 @@ package General;
 
 import java.util.ArrayList;
 
-public class ClassObjectTuple<FileName,ClassName,ObjectName> {
+public class ClassObjectTuple<ClassName,ObjectName> {
 	
-	private FileName fileName;
     private ClassName className;
     private ObjectName objectName;
     private ArrayList<String> methods;
     
-    public ClassObjectTuple(FileName fileName, ClassName className, ObjectName objectName){
-    	this.setFileName(fileName);
+    public ClassObjectTuple(ClassName className, ObjectName objectName){
         this.setClassName(className);
         this.setObjectName(objectName);
         this.methods = new ArrayList<String>();
@@ -20,9 +18,6 @@ public class ClassObjectTuple<FileName,ClassName,ObjectName> {
     	methods.add(methodName);
     }
 
-    public FileName getFileName() {
-    	return fileName;
-    }
     
 	public ClassName getClassName() {
 		return className;
@@ -32,9 +27,7 @@ public class ClassObjectTuple<FileName,ClassName,ObjectName> {
 		this.className = className;
 	}
 	
-	public void setFileName(FileName fileName) {
-		this.fileName = fileName;
-	}
+
 
 	public ObjectName getObjectName() {
 		return objectName;
@@ -46,6 +39,16 @@ public class ClassObjectTuple<FileName,ClassName,ObjectName> {
 	
 	public String getMethods() {
 		return methods.toString();
+	}
+	public ArrayList<String> getMethodsList(){
+		return methods;
+	}
+
+	public boolean methodExists(String methodName) {
+		if(methods.contains(methodName)) {
+			return true;
+		}
+		return false;
 	}
     
     

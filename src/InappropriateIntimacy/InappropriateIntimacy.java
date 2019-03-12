@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import FileProcessing.FileHandler;
@@ -19,8 +20,8 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<ClassObjectTuple<String,String,String>> cml = new ArrayList<ClassObjectTuple<String, String,String>>();
-
+	private List<ClassObjectTuple<String,String>> cml = new ArrayList<ClassObjectTuple<String,String>>();
+	private List<String> unused = new ArrayList<String>();
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
 			@Override
@@ -38,12 +39,13 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	public void report() {
 		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
+		checkMethods();
 		print();
 	}
 	
 	public void print() {
-		for(ClassObjectTuple<String,String, String> cot : cml) {
-			System.out.println(cot.getFileName()+" : "+cot.getClassName()+" : "+cot.getObjectName()+" : "+cot.getMethods());
+		for(String methods: unused) {
+			System.out.println(methods);
 		}
 	}
 	
@@ -54,9 +56,12 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
     		        if(isClassDef(line)) {
     		        	getObject(line, FileHandler.removeExtension(f.getName()));
     		        }else {
-	    		        for(ClassObjectTuple<String,String, String> cot : cml) {
-	    		        	if(cot.getFileName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".")){
-	    		        		cot.addMethodName(getMethodCall(line, cot.getObjectName()).trim());
+	    		        for(ClassObjectTuple<String,String> cot : cml) {
+	    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
+	    		        		String methodName = getMethodCall(line, cot.getObjectName()).trim();
+	    		        		if(!cot.methodExists(methodName)) {
+	    		        			cot.addMethodName(methodName);
+	    		        		}
 	    		        	}
 	    		        }
     		        }
@@ -66,6 +71,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 			}
     	}
 	}
+	
 	
 
 	private String getMethodCall(String line, String objectName) {
@@ -79,7 +85,9 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	public void getObject(String line, String fileName) {
 		String className = line.split(" ")[0].trim();
 		String objectName = line.split(" ")[1].trim();
-		cml.add(new ClassObjectTuple<String, String, String>(fileName, className, objectName));
+		if(!fileName.equals(className)) {
+			cml.add(new ClassObjectTuple<String, String>(className, objectName));
+		}
 	}
 
 	public boolean isClassDef(String line) {
@@ -91,5 +99,38 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		return false;
 	}
 	
+	public void checkMethods() {
+		for(File f : FileHandler.uploadedFiles) {
+			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+    		    for(String line; (line = br.readLine()) != null; ) {
+    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+    		    		String method = getMethodDef(line);
+    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName()))) {
+    		    			unused.add(method);
+    		    		}
+    		    	}
+    		    }
+    		} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private boolean isUsed(String methodDef, String className) {
+		for(ClassObjectTuple<String, String> cot: cml) {
+			if(cot.getClassName().equals(className)) {
+				if(cot.getMethodsList().contains(methodDef)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private String getMethodDef(String line) {
+		String cut = line.substring(0,line.indexOf(Literals.O_BRACKET)).trim();
+		String[] cutSplit = cut.trim().split(" ");
+		return cutSplit[ cutSplit.length - 1 ].trim();
+	}
 	
 }
