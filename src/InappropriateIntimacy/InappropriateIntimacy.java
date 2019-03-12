@@ -69,12 +69,10 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	
 
 	private String getMethodCall(String line, String objectName) {
-		for(String s: line.trim().split(" ")) {
-			if(s.contains(objectName+".")) {
-				//TODO finish this
-			}
-		}
-		return "";
+		int startIndex = line.indexOf(objectName+".");
+		String cut = line.substring(startIndex);
+		int endIndex = cut.indexOf("(");
+		return cut.substring(cut.indexOf(".")+1, endIndex);
 	}
 
 	//TODO: work with new approach
