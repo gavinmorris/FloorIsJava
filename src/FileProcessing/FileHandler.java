@@ -12,7 +12,7 @@ public class FileHandler {
     public static ArrayList<String> classes = new ArrayList<String>();
     public static void addNewFile(Path path){
         if(isFileTypeJava(path.toString()))
-            uploadedFiles.add(new File(path.toString()));
+        	uploadedFiles.add(new File(path.toString()));
     }
     public static boolean isFileTypeJava(String path) {
         if(path.endsWith(".java"))

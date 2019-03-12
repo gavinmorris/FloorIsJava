@@ -43,18 +43,18 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		print();
 	}
 	
-	public void print() {
+	private void print() {
 		for(String methods: unused) {
 			System.out.println(methods);
 		}
 	}
 	
-	public void lookForObjects() {
+	private void lookForObjects() {
 		for(File f : FileHandler.uploadedFiles) {
     		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
     		    for(String line; (line = br.readLine()) != null; ) {
     		        if(isClassDef(line)) {
-    		        	getObject(line, FileHandler.removeExtension(f.getName()));
+    		        	getObject(line.trim(), FileHandler.removeExtension(f.getName()));
     		        }else {
 	    		        for(ClassObjectTuple<String,String> cot : cml) {
 	    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
@@ -63,7 +63,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	    		        			cot.addMethodName(methodName);
 	    		        		}
 	    		        	}
-	    		        }
+    		        	}
     		        }
     		    }
     		} catch (IOException e) {
@@ -72,8 +72,6 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
     	}
 	}
 	
-	
-
 	private String getMethodCall(String line, String objectName) {
 		int startIndex = line.indexOf(objectName+".");
 		String cut = line.substring(startIndex);
@@ -82,7 +80,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	}
 
 	//TODO: work with new approach
-	public void getObject(String line, String fileName) {
+	private void getObject(String line, String fileName) {
 		String className = line.split(" ")[0].trim();
 		String objectName = line.split(" ")[1].trim();
 		if(!fileName.equals(className)) {
@@ -90,7 +88,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		}
 	}
 
-	public boolean isClassDef(String line) {
+	private boolean isClassDef(String line) {
 		for(String cName: FileHandler.classes) {
 			if(line.contains(cName) && line.contains("new") && line.contains(Literals.EQUALS)) {
 				return true;
@@ -99,21 +97,37 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		return false;
 	}
 	
-	public void checkMethods() {
+	private void checkMethods() {
 		for(File f : FileHandler.uploadedFiles) {
-			try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-    		    for(String line; (line = br.readLine()) != null; ) {
-    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
-    		    		String method = getMethodDef(line);
-    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName()))) {
-    		    			unused.add(method);
-    		    		}
-    		    	}
-    		    }
-    		} catch (IOException e) {
-				e.printStackTrace();
+			if(!isInterface(f)) {
+				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+	    		    for(String line; (line = br.readLine()) != null; ) {
+	    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+	    		    		String method = getMethodDef(line);
+	    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
+	    		    			if(!unused.contains(method))
+	    		    				unused.add(method);
+	    		    		}
+	    		    	}
+	    		    }
+	    		} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+	}
+
+	private boolean isInterface(File f) {
+		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+		    for(String line; (line = br.readLine()) != null; ) {
+		    	if(line.contains("public interface")) {
+		    		return true;
+		    	}
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private boolean isUsed(String methodDef, String className) {
