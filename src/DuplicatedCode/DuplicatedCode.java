@@ -29,143 +29,203 @@ public class DuplicatedCode extends JButton implements ActionListener {
     }
 
 
-    // TODO
-    // every 2 lines, 3, 4, etc
-    // every 1 consecutive line
+    //TODO
+    // mark lines on original text with highest number
+    // print number to console with lines
+    // report how many of each hazard there are per file
+    // Dead Code
 
-    public void nothing(){
-        int k=0;
-        k++;
-        k++;
-        k++;
-        k++;
-    }
 
     public void report(){
         System.out.println("\n\n ----- Duplicated Code ----- ");
+        System.out.println("3-4 lines: warning");
+        System.out.println("5-7 lines: bad");
+        System.out.println("7-etc lines: hazard");
 
         for(File f : FileHandler.uploadedFiles) {
-//            String s = new String();
             try(BufferedReader br0 = new BufferedReader(new FileReader(f))) {
-                br0.mark(1000);
-                long numLines=1;
-                while(br0.readLine() != null){
-                    numLines++;
+
+                ArrayList<String> file = new ArrayList<>();
+
+                //get file length and add relevant lines to arraylist
+                long totalNumLines=0;
+
+                String line = br0.readLine();
+
+                while(line != null){
+                    line = line.trim();
+                    if(!line.equals("") && !line.equals("{") && !line.equals("}")){
+                        file.add(line.trim());
+                    }
+
+                    totalNumLines++;
+                    line = br0.readLine();
                 }
                 br0.close();
-                System.out.println("\n\nClass: " + f.getName() + ": " + numLines);
 
-                int bigMarkIndex=0;
+                long actualNumLines = file.size();
+
+                System.out.println("\n\nClass: " + f.getName()
+                        + ", totalNumLines: " + totalNumLines + ", actualNumLines: " + actualNumLines);
+
                 bigLoop:
-                for(int i=0; i<numLines-6; i++){
-                    //get file length
-                    BufferedReader br = new BufferedReader(new FileReader(f));
-                    for(int j=0; j<bigMarkIndex; j++){
-                        br.readLine();
-                    }
-                    br.mark(1000);
+                for(int occurenceNum=0; occurenceNum<actualNumLines-2; occurenceNum++) {
 
-                    String tmp = br.readLine().trim();
-                    while(tmp.equals("") || tmp.equals("{") || tmp.equals("}")){
-                        br.mark(1000);
-                        tmp = br.readLine().trim();
-                        bigMarkIndex++;
-                        i++;
-                    }
-                    br.reset();
+                    ArrayList<String> currentLines = new ArrayList<>();
+                    ArrayList<String> duplicateConsecutiveLines = new ArrayList<>();
+                    ArrayList<String> duplicateSeparatedLines = new ArrayList<>();
 
-                    List<Integer> currLinesIndex = new ArrayList<>();
-                    currLinesIndex.add(bigMarkIndex);
+                    int fileLinesIndex = occurenceNum;
+                    currentLines.add(file.get(fileLinesIndex));
+//                    System.out.println("Tra la la: " + occurenceNum + " " + currentLines.get(0));
 
-                    int currMarkIndex=0;
-                    List<String> lines = new ArrayList<>();
-                    lines.add(br.readLine().trim());
-                    String line = br.readLine().trim();
-                    currMarkIndex+=2;
-                    while(line.equals("") || line.equals("{") || line.equals("}")){
-                        if(i+currMarkIndex < numLines-6) {
-                            line = br.readLine().trim();
-                            currMarkIndex++;
-                        }
-                        else{
+                    // check for consecutive lines
+                    if (currentLines.get(0).equals(file.get(++fileLinesIndex))) {
+                        duplicateConsecutiveLines.add(currentLines.get(0));
+                        duplicateConsecutiveLines.add(currentLines.get(0));
+                        occurenceNum++;
+                        if(exitLoop(fileLinesIndex+1, file)) {
+                            printDuplicateConsecutiveLines(duplicateConsecutiveLines);
                             break bigLoop;
                         }
-                    }
-                    lines.add(line);
-
-                    br.mark(1000);
-
-
-//                    System.out.println("\nchecking line 1: " + lines.get(0));
-//                    System.out.println("checking line 2: " + lines.get(1));
-//                    System.out.println("num lines to check: " + (numLines-bigMarkIndex-currMarkIndex-1));
-
-                    for(int k=0; k<numLines-bigMarkIndex-currMarkIndex-1; k++){
-                        int numDuplicateLines=0;
-//                        System.out.println(k);
-                        String tempLine = br.readLine().trim();
-                        while(tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")){
-                            k++;
-//                            System.out.println(k);
-                            if(k >= (numLines-bigMarkIndex-currMarkIndex-1)){
-                                break;
+                        line = file.get(++fileLinesIndex);
+                        while (line.equals(duplicateConsecutiveLines.get(0))) {
+                            duplicateConsecutiveLines.add(line);
+                            occurenceNum++;
+                            if(exitLoop(fileLinesIndex+1, file)) {
+                                printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                break bigLoop;
                             }
-                            else {
-                                tempLine = br.readLine().trim();
-                            }
+                            line = file.get(++fileLinesIndex);
                         }
+                    }
+                    else{
+                        if(exitLoop(fileLinesIndex, file)) {
+                            printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                            break bigLoop;
+                        }
+                        line = file.get(fileLinesIndex);
+                    }
+                    currentLines.add(line);
+//                    System.out.println("Test 222: " + line);
+                    int currLineFileIndex = fileLinesIndex;
 
-                        if(k < (numLines-bigMarkIndex-currMarkIndex-1)) {
+                    smallLoop:
+                    for (int numLinesApart = 0; numLinesApart < actualNumLines - fileLinesIndex - 1; numLinesApart++) {
+                        int resetIndex = fileLinesIndex;
+                        if(exitLoop(fileLinesIndex+1, file)) {
+                            printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                            printDuplicateSeparatedLines(duplicateSeparatedLines);
+                            break smallLoop;
+                        }
+                        line = file.get(++fileLinesIndex);
+//                        System.out.println("0: " + line);
 
-//                            System.out.println("k: " + k);
-//                            System.out.println("curr line 0: " + tempLine);
+                        int currLineIndex = 0;
+//                        System.out.println("Test 444: " + currentLines.get(currLineIndex+1));
+                        if (line.equals(currentLines.get(currLineIndex++))) {
+                            if(exitLoop(fileLinesIndex+1, file)) {
+                                printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                break smallLoop;
+                            }
+                            line = file.get(++fileLinesIndex);
+                            // check for consecutive lines
+                            if (line.equals(file.get(fileLinesIndex - 1))) {
+                                if(exitLoop(fileLinesIndex+1, file)) {
+                                    printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                    printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                    break smallLoop;
+                                }
+                                line = file.get(++fileLinesIndex);
+                            }
+//                            System.out.println("1: " + line);
 
-                            br.mark(1000);
+                            if (line.equals(currentLines.get(currLineIndex++))) {
 
-                            if(lines.get(0).equals(tempLine)) {
-                                int duplicatedLineIndex=0;
-//                                System.out.println("Dupped");
-                                numDuplicateLines++;
-                                endLoop:
-                                for(int j = 1; j < lines.size(); j++) {
-                                    tempLine = br.readLine().trim();
-                                    int num=1;
-                                    while (tempLine.equals("") || tempLine.equals("{") || tempLine.equals("}")) {
-                                        num++;
-//                                        System.out.println(num + ":num k:" + k + " else: " + (numLines-bigMarkIndex-currMarkIndex-1));
-                                        if(num+k < (numLines-bigMarkIndex-currMarkIndex-1)){
-                                            tempLine = br.readLine().trim();
-                                        }
-                                        else{
-                                            break endLoop;
-                                        }
+                                duplicateSeparatedLines.add(currentLines.get(currLineIndex - 2));
+                                duplicateSeparatedLines.add(currentLines.get(currLineIndex - 1));
+
+                                if(exitLoop(fileLinesIndex+1, file)) {
+                                    printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                    printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                    break smallLoop;
+                                }
+                                line = file.get(++fileLinesIndex);
+                                // check for consecutive lines
+                                if (line.equals(file.get(fileLinesIndex - 1))) {
+                                    if(exitLoop(fileLinesIndex+1, file)) {
+                                        printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                        printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                        break smallLoop;
                                     }
-//                                    System.out.println("curr line " + j + "; " + tempLine);
-
-                                    if(lines.get(j).equals(tempLine)) {
-//                                        System.out.println("Dupped");
-                                        numDuplicateLines++;
-                                    }
+                                    line = file.get(++fileLinesIndex);
                                 }
 
-                                if(numDuplicateLines == lines.size()) {
-                                    System.out.println("Duplicated lines: ");
-//                                    for (int t = 0; t < numDuplicateLines; t++) {
-                                        System.out.println((bigMarkIndex+1) + ": " + lines.get(0));
-                                        System.out.println((bigMarkIndex+currMarkIndex) + ": " + lines.get(1));
-//                                    }
-                                    System.out.println();
+                                currentLines.add(file.get(++currLineFileIndex));
+//                                System.out.println("2: " + currentLines.get(currLineIndex));
+
+                                while (currLineIndex < numLinesApart + 2 && line.equals(currentLines.get(currLineIndex))) {
+                                    duplicateSeparatedLines.add(currentLines.get(currLineIndex));
+                                    if(exitLoop(fileLinesIndex+1, file)) {
+                                        printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                        printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                        break smallLoop;
+                                    }
+                                    line = file.get(++fileLinesIndex);
+                                    // check for consecutive lines
+                                    if (line.equals(file.get(fileLinesIndex - 1))) {
+                                        if(exitLoop(fileLinesIndex+1, file)) {
+                                            printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                                            printDuplicateSeparatedLines(duplicateSeparatedLines);
+                                            break smallLoop;
+                                        }
+                                        line = file.get(++fileLinesIndex);
+                                    }
+                                    currentLines.add(line);
+//                                    System.out.println("3: " + currentLines.get(currLineIndex+1));
                                 }
                             }
                         }
-                        br.reset();
+                        fileLinesIndex = ++resetIndex;
                     }
-                    bigMarkIndex++;
-                    br.close();
+
+                    printDuplicateConsecutiveLines(duplicateConsecutiveLines);
+                    printDuplicateSeparatedLines(duplicateSeparatedLines);
                 }
+
+
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private boolean exitLoop(int index, ArrayList<String> file){
+        if(index<file.size()){
+            return false;
+        }
+        return true;
+    }
+
+    private void printDuplicateConsecutiveLines(ArrayList<String> duplicateConsecutiveLines){
+        if (duplicateConsecutiveLines.size() > 0) {
+            System.out.println("Duplicate consecutive lines:");
+            for(int i=0; i<duplicateConsecutiveLines.size(); i++){
+                System.out.println(duplicateConsecutiveLines.get(i));
+            }
+            System.out.println();
+        }
+    }
+    private void printDuplicateSeparatedLines(ArrayList<String> duplicateSeparatedLines){
+        if (duplicateSeparatedLines.size() > 0) {
+            System.out.println("Duplicate separated lines:");
+            for(int i=0; i<duplicateSeparatedLines.size(); i++){
+                System.out.println(duplicateSeparatedLines.get(i));
+            }
+            System.out.println();
         }
     }
 }
