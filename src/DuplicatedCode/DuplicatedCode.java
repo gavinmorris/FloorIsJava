@@ -13,6 +13,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
     public ArrayList<boolean[]> allWarningLines;
     public ArrayList<boolean[]> allBadLines;
     public ArrayList<boolean[]> allHazardLines;
+    public ArrayList<boolean[]> allConsecutiveLines;
 
     public DuplicatedCode(){
         this.addActionListener(new ActionListener() {
@@ -27,6 +28,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
     }
 
     public void report(){
+
         System.out.println("\n\n ----- Duplicated Code ----- ");
         System.out.println("3-4 lines: warning");
         System.out.println("5-6 lines: bad");
@@ -35,6 +37,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
         allWarningLines = new ArrayList<>();
         allBadLines = new ArrayList<>();
         allHazardLines = new ArrayList<>();
+        allConsecutiveLines = new ArrayList<>();
 
         for(int fileNum=0; fileNum<FileHandler.uploadedFiles.size(); fileNum++){
             File f = FileHandler.uploadedFiles.get(fileNum);
@@ -43,6 +46,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 ArrayList<String> file = new ArrayList<>();
                 ArrayList<Integer> blankLines = new ArrayList<>();
                 ArrayList<Integer> curlyLines = new ArrayList<>();
+                ArrayList<Integer> commentedLines = new ArrayList<>();
 
                 //get file length and add relevant lines to arraylist
                 long totalNumLines=0;
@@ -53,10 +57,34 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     line = line.trim();
                     if(!line.equals("")){
                         if(!line.equals("{") && !line.equals("}")) {
-                            while(line.endsWith("{") || line.endsWith("}")){
-                                line = line.substring(0, line.length()-1).trim();
+                            if(!line.startsWith("//")){
+                                if(!line.startsWith("/*")){
+                                    while(line.endsWith("{") || line.endsWith("}")){
+                                        line = line.substring(0, line.length()-1).trim();
+                                    }
+                                    file.add(line);
+                                }
+                                else{
+                                    if(!line.contains("*/")){
+                                        while(!line.contains("*/")){
+                                            commentedLines.add((int) totalNumLines);
+                                            totalNumLines++;
+                                            line = br0.readLine();
+                                            if(line==null)
+                                                break;
+                                        }
+                                        line = line.substring(line.indexOf("*/")+2);
+                                        file.add(line);
+                                    }
+                                    else{
+                                        line = line.substring(line.indexOf("*/")+2, line.length()-1);
+                                        file.add(line);
+                                    }
+                                }
                             }
-                            file.add(line);
+                            else{
+                                commentedLines.add((int) totalNumLines);
+                            }
                         }
                         else{
                             curlyLines.add((int) totalNumLines);
@@ -76,13 +104,10 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 boolean[] currentWarningLines = new boolean[(int) totalNumLines];
                 boolean[] currentBadLines = new boolean[(int) totalNumLines];
                 boolean[] currentHazardLines = new boolean[(int) totalNumLines];
+                boolean[] currentConsecutiveLines = new boolean[(int) totalNumLines];
 
                 System.out.println("\n\nClass: " + f.getName()
                         + ", totalNumLines: " + totalNumLines + ", actualNumLines: " + actualNumLines);
-
-
-//                System.out.println("10: " + convertActualToTotalLineNum(10, blankLines, curlyLines));
-
 
                 bigLoop:
                 for(int occurenceNum=0; occurenceNum<actualNumLines-2; occurenceNum++) {
@@ -98,7 +123,6 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     int fileLinesIndex = occurenceNum;
                     currentLines.add(file.get(fileLinesIndex));
                     currentLineNums.add(fileLinesIndex);
-//                    System.out.println("Tra la la: " + occurenceNum + " " + currentLines.get(0));
 
                     // check for consecutive lines
                     if (currentLines.get(0).equals(file.get(++fileLinesIndex))) {
@@ -128,13 +152,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     }
                     currentLines.add(line);
                     currentLineNums.add(fileLinesIndex);
-                    int currentLinesIndex=fileLinesIndex;
-//                    System.out.println("Test 222: " + line);
                     int currLineFileIndex = fileLinesIndex;
-//                    ArrayList<String> tempCurrentLines = currentLines;
-//                    ArrayList<Integer> tempCurrentLineNums = currentLineNums;
-//                    ArrayList<String> tempDuplicateLines = duplicateSeparatedLines;
-//                    ArrayList<Integer> tempDuplicateLineNums = duplicateSeparatedLineNums;
 
                     smallLoop:
                     for (int numLinesApart = 0; numLinesApart < actualNumLines - fileLinesIndex - 1; numLinesApart++) {
@@ -142,24 +160,21 @@ public class DuplicatedCode extends JButton implements ActionListener {
                         if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
                             break smallLoop;
                         line = file.get(++fileLinesIndex);
-//                        System.out.println("0: " + line);
 
                         int currLineIndex = 0;
-//                        System.out.println("Test 444: " + currentLines.get(currLineIndex+1));
                         if (line.equals(currentLines.get(currLineIndex++))) {
                             if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
                                 break smallLoop;
                             line = file.get(++fileLinesIndex);
+
                             // check for consecutive lines
                             if (line.equals(file.get(fileLinesIndex - 1))) {
                                 if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
                                     break smallLoop;
                                 line = file.get(++fileLinesIndex);
                             }
-//                            System.out.println("1: " + line);
 
                             if (line.equals(currentLines.get(currLineIndex++))) {
-//                                System.out.println(duplicateSeparatedLines.size());
                                 duplicateSeparatedLines.add(currentLines.get(currLineIndex - 2));
                                 duplicateSeparatedLineNums.add(fileLinesIndex-1);
                                 duplicateSeparatedLines.add(currentLines.get(currLineIndex - 1));
@@ -168,6 +183,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                 if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
                                     break smallLoop;
                                 line = file.get(++fileLinesIndex);
+
                                 // check for consecutive lines
                                 if (line.equals(file.get(fileLinesIndex - 1))) {
                                     if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
@@ -177,7 +193,6 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
                                 currentLines.add(file.get(++currLineFileIndex));
                                 currentLineNums.add(currLineFileIndex);
-//                                System.out.println("2: " + currentLines.get(currLineIndex));
 
                                 while (currLineIndex < numLinesApart + 2 && line.equals(currentLines.get(currLineIndex))) {
                                     duplicateSeparatedLines.add(currentLines.get(currLineIndex));
@@ -185,6 +200,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                     if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
                                         break smallLoop;
                                     line = file.get(++fileLinesIndex);
+
                                     // check for consecutive lines
                                     if (line.equals(file.get(fileLinesIndex - 1))) {
                                         if(exitLoop(fileLinesIndex+1, file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines))
@@ -193,40 +209,32 @@ public class DuplicatedCode extends JButton implements ActionListener {
                                     }
                                     currentLines.add(file.get(++currLineFileIndex));
                                     currentLineNums.add(currLineFileIndex);
-//                                    System.out.println("3: " + currentLines.get(currLineIndex+1));
                                 }
                                 currentLines.remove(currentLines.size()-1);
                                 currentLineNums.remove(currentLineNums.size()-1);
                             }
                         }
-//                        if(duplicateSeparatedLines.size()>0)
-//                            System.out.println(duplicateSeparatedLines.size() + " " + duplicateSeparatedLines);
-//                        printAllLines(new ArrayList<>(), new ArrayList<>(), duplicateSeparatedLines);
                         fileLinesIndex = ++resetIndex;
-
 
                         if(duplicateSeparatedLines.size()>0) {
                             boolean[] currWarning = addDuplicateLinesToWarningArray(currentLines.size(), currentLineNums, duplicateSeparatedLineNums, currentWarningLines,
-                                    blankLines, curlyLines);
+                                    blankLines, curlyLines, commentedLines);
                             for (int i = 0; i < currWarning.length; i++) {
                                 if (currWarning[i]) {
-//                                    System.out.println("test 1");
                                     currentWarningLines[i] = true;
                                 }
                             }
                             boolean[] currBad = addDuplicateLinesToBadArray(currentLines.size(), currentLineNums, duplicateSeparatedLineNums, currentBadLines,
-                                    blankLines, curlyLines);
+                                    blankLines, curlyLines, commentedLines);
                             for (int i = 0; i < currWarning.length; i++) {
                                 if (currBad[i]) {
-//                                    System.out.println("test 2");
                                     currentBadLines[i] = true;
                                 }
                             }
                             boolean[] currHazard = addDuplicateLinesToHazardArray(currentLines.size(), currentLineNums, duplicateSeparatedLineNums, currentHazardLines,
-                                    blankLines, curlyLines);
+                                    blankLines, curlyLines, commentedLines);
                             for (int i = 0; i < currHazard.length; i++) {
                                 if (currHazard[i]) {
-//                                    System.out.println("test 3");
                                     currentHazardLines[i] = true;
                                 }
                             }
@@ -238,29 +246,24 @@ public class DuplicatedCode extends JButton implements ActionListener {
                         }
                         duplicateSeparatedLines = new ArrayList<>();
                         duplicateSeparatedLineNums = new ArrayList<>();
-//                        duplicateSeparatedLines = new
                     }
 
-//                    printAllLines(duplicateConsecutiveLines, new ArrayList<>(), duplicateSeparatedLines);
-//                    exitLoop(file.size(), file, duplicateConsecutiveLines, currentLines, duplicateSeparatedLines);
+                    if(duplicateConsecutiveLines.size()>0){
+                        boolean[] currConsecutive = addConsecutiveLinesToConsecutiveArray(duplicateConsecutiveLineNums, currentConsecutiveLines,
+                                blankLines, curlyLines, commentedLines);
+                        for (int i = 0; i < currConsecutive.length; i++) {
+                            if (currConsecutive[i]) {
+                                currentConsecutiveLines[i] = true;
+                            }
+                        }
+                    }
                 }
 
-//                if(currentWarningLines.length > 0)
-                    allWarningLines.add(currentWarningLines);
-//                else
-//                    allWarningLines.add(new boolean[(int) f.length()]);
-//                if(currentBadLines.length > 0)
-                    allBadLines.add(currentBadLines);
-//                else
-//                    allBadLines.add(new boolean[(int) f.length()]);
-//                if(currentHazardLines.length > 0)
-                    allHazardLines.add(currentHazardLines);
-//                    for(int i=0; i<currentHazardLines.length; i++){
-//                        System.out.println(currentHazardLines[i]);
-//                    }
-//                System.out.println();
-//                else
-//                    allHazardLines.add(new boolean[(int) f.length()]);
+                allWarningLines.add(currentWarningLines);
+                allBadLines.add(currentBadLines);
+                allHazardLines.add(currentHazardLines);
+                allConsecutiveLines.add(currentConsecutiveLines);
+//                allConsecutiveLines.add();
 
                 BufferedReader br = new BufferedReader(new FileReader(f));
                 System.out.println("\nHazard Lines:");
@@ -292,6 +295,16 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 }
                 br.close();
 
+                br = new BufferedReader(new FileReader(f));
+                System.out.println("\nConsecutive Duplicate Lines:");
+                for(int j=0; j<totalNumLines; j++){
+                    line = br.readLine();
+                    if(allConsecutiveLines.get(allConsecutiveLines.size()-1)[j]){
+                        System.out.println((j+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -303,91 +316,63 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
     private boolean[] addDuplicateLinesToWarningArray(int currentLinesSize, ArrayList<Integer> currentLineNums,
                                                       ArrayList<Integer> duplicateSeparatedLineNums, boolean[] currentWarningLines,
-                                                        ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines){
-//        ArrayList<Integer> allLines = currentLineNums;
-//        allLines.addAll(duplicateSeparatedLineNums);
-//        boolean[] tempWarningLines = currentWarningLines;
-//        for(int i=0; i<currentLineNums.size(); i++){
-//            System.out.print(convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines) + " ");
-//        }
-//        System.out.println();
-//        for(int i=0; i<duplicateSeparatedLineNums.size(); i++){
-//            System.out.print(convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines) + " ");
-//        }
-//        System.out.println(duplicateSeparatedLineNums);
-        System.out.println();
-
+                                                        ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines, ArrayList<Integer> commentedLines){
         if(currentLinesSize>=3 && currentLinesSize<=4){
             for(int i=0; i<currentLineNums.size(); i++){
-                currentWarningLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines)] = true;
+                currentWarningLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
             for(int i=0; i<duplicateSeparatedLineNums.size(); i++){
-                currentWarningLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines)] = true;
+                currentWarningLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
         }
         return currentWarningLines;
     }
     private boolean[] addDuplicateLinesToBadArray(int currentLinesSize, ArrayList<Integer> currentLineNums,
                                                       ArrayList<Integer> duplicateSeparatedLineNums, boolean[] currentBadLines,
-                                                  ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines){
-        //        ArrayList<Integer> allLines = currentLineNums;
-//        allLines.addAll(duplicateSeparatedLineNums);
-//        boolean[] tempWarningLines = currentBadLines;
-
+                                                  ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines, ArrayList<Integer> commentedLines){
         if(currentLinesSize>=5 && currentLinesSize<=6){
             for(int i=0; i<currentLineNums.size(); i++){
-                currentBadLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines)] = true;
+                currentBadLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
             for(int i=0; i<duplicateSeparatedLineNums.size(); i++){
-                currentBadLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines)] = true;
+                currentBadLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
         }
         return currentBadLines;
     }
     private boolean[] addDuplicateLinesToHazardArray(int currentLinesSize, ArrayList<Integer> currentLineNums,
-                                                  ArrayList<Integer> duplicateSeparatedLineNums, boolean[] currentHazardLines,
-                                                     ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines){
-        //        ArrayList<Integer> allLines = currentLineNums;
-//        allLines.addAll(duplicateSeparatedLineNums);
-//        boolean[] tempWarningLines = currentHazardLines;
-
+                                                     ArrayList<Integer> duplicateSeparatedLineNums, boolean[] currentHazardLines,
+                                                     ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines, ArrayList<Integer> commentedLines){
         if(currentLinesSize>=7){
             for(int i=0; i<currentLineNums.size(); i++){
-                currentHazardLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines)] = true;
+                currentHazardLines[convertActualToTotalLineNum(currentLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
             for(int i=0; i<duplicateSeparatedLineNums.size(); i++){
-                currentHazardLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines)] = true;
+                currentHazardLines[convertActualToTotalLineNum(duplicateSeparatedLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
             }
         }
         return currentHazardLines;
     }
+    private boolean[] addConsecutiveLinesToConsecutiveArray(ArrayList<Integer> duplicateConsecutiveLineNums, boolean[] currentConsecutiveLines,
+                                                     ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines, ArrayList<Integer> commentedLines){
+        for(int i=0; i<duplicateConsecutiveLineNums.size(); i++){
+            currentConsecutiveLines[convertActualToTotalLineNum(duplicateConsecutiveLineNums.get(i), blankLines, curlyLines, commentedLines)] = true;
+        }
+        return currentConsecutiveLines;
+    }
 
 
-    private boolean exitLoop(int lineNum, /*int totalNumLines, */ArrayList<String> file,
-            ArrayList<String> duplicateConsecutiveLines, ArrayList<String> currentLines, ArrayList<String> duplicateSeparatedLines/*,
-            ArrayList<Integer> duplicateConsecutiveLineNums, ArrayList<Integer> currentLineNums, ArrayList<Integer> duplicateSeparatedLineNums*/){
-
-//        boolean[] currentWarningLines = new boolean[totalNumLines];
+    private boolean exitLoop(int lineNum, ArrayList<String> file,
+            ArrayList<String> duplicateConsecutiveLines, ArrayList<String> currentLines, ArrayList<String> duplicateSeparatedLines){
 
         if(lineNum<file.size()){
             return false;
         }
-        else {
-//            printAllLines(duplicateConsecutiveLines, currentLines, duplicateSeparatedLines);
-//
-//            int index=0;
-//            for(int i=0; i<totalNumLines; i++){
-//                if(duplicateConsecutiveLineNums.get(index) == i){
-//                    currindex++;
-//                }
-//            }
-
-            return true;
-        }
+        return true;
     }
 
-    private int convertActualToTotalLineNum(int lineNum, ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines){
-        int blankLinesIndex = 0, curlyLinesIndex = 0;
+    private int convertActualToTotalLineNum(int lineNum, ArrayList<Integer> blankLines, ArrayList<Integer> curlyLines, ArrayList<Integer> commentedLines){
+        int blankLinesIndex = 0, curlyLinesIndex = 0, commentedLinesIndex=0;
         int k=0;
         while(k<=lineNum) {
             if (blankLines.size()>blankLinesIndex && blankLines.get(blankLinesIndex) == k) {
@@ -395,6 +380,9 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 lineNum++;
             } else if (curlyLines.size()>blankLinesIndex && curlyLines.get(curlyLinesIndex) == k) {
                 curlyLinesIndex++;
+                lineNum++;
+            } else if (commentedLines.size()>commentedLinesIndex && commentedLines.get(commentedLinesIndex) == k) {
+                commentedLinesIndex++;
                 lineNum++;
             } else {
                 k++;
@@ -404,38 +392,6 @@ public class DuplicatedCode extends JButton implements ActionListener {
         return lineNum;
     }
 
-    private void printAllLines(ArrayList<String> duplicateConsecutiveLines,
-                               ArrayList<String> currentLines, ArrayList<String> duplicateSeparatedLines){
-        printDuplicateConsecutiveLines(duplicateConsecutiveLines);
-        printCurrentLines(currentLines);
-        printDuplicateSeparatedLines(duplicateSeparatedLines);
 
-    }
-    private void printDuplicateConsecutiveLines(ArrayList<String> duplicateConsecutiveLines){
-        if (duplicateConsecutiveLines.size() > 0) {
-            System.out.println("Duplicate consecutive lines:");
-            for(int i=0; i<duplicateConsecutiveLines.size(); i++){
-                System.out.println(duplicateConsecutiveLines.get(i));
-            }
-            System.out.println();
-        }
-    }
-    private void printCurrentLines(ArrayList<String> currentLines){
-        if (currentLines.size() > 0) {
-            System.out.println("Current lines:");
-            for(int i=0; i<currentLines.size(); i++){
-                System.out.println(currentLines.get(i));
-            }
-            System.out.println();
-        }
-    }
-    private void printDuplicateSeparatedLines(ArrayList<String> duplicateSeparatedLines){
-        if (duplicateSeparatedLines.size() > 0) {
-            System.out.println("Duplicate separated lines:");
-            for(int i=0; i<duplicateSeparatedLines.size(); i++){
-                System.out.println(duplicateSeparatedLines.get(i));
-            }
-            System.out.println();
-        }
-    }
+
 }

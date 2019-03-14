@@ -9,10 +9,7 @@ import InappropriateIntimacy.InappropriateIntimacy;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +30,9 @@ public class DeadCode extends JButton implements ActionListener {
 
     public void report() {
         System.out.println("-------Public Methods to be made private.---------");
-        checkPublicAndPrivateMethods(new InappropriateIntimacy().report());
-//        checkProtectedMethods();
+        checkPublicMethods(new InappropriateIntimacy().report());
+        checkPrivateMethods();
+        checkProtectedMethods();
 //        lookForObjects();
 //        checkMethods();
     }
@@ -42,7 +40,93 @@ public class DeadCode extends JButton implements ActionListener {
     //public voidd getBob(){
     //public void sgetBob(){
 
-    private void checkPublicAndPrivateMethods(List<ClassMethod<String, String>> unused){
+    private void checkProtectedMethods(){
+
+    }
+
+    private void checkPrivateMethods(){
+        for(File f : FileHandler.uploadedFiles) {
+            if(!isInterface(f)) {
+                List<ClassMethod<String, String>> methods = new ArrayList<>();
+                try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                    for(String line; (line = br.readLine()) != null; ) {
+                        if(line.contains(Literals.PRIVATE) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                            methods.add(new ClassMethod<>(FileHandler.removeExtension(f.getName()), getMethodDef(line)));
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
+                boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
+                for (ClassMethod<String, String> cm : methods) {
+                    if(cm.getClassName().equals(FileHandler.removeExtension(f.getName()))){
+                        boolean definiteOccurence = false;
+                        ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
+
+                        try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                            int lineIndex=0;
+                            for(String line; (line = br.readLine()) != null; ) {
+                                // if line != method call ever then aadd to dead code
+                                if(line.contains(" ".concat(cm.getMethodName().concat("("))) || line.contains(".".concat(cm.getMethodName().concat("(")))) {
+                                    // if method call is a declaration
+                                    if (line.contains(Literals.PRIVATE) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                                        possibleOccurenceLineNums.add(lineIndex);
+                                    }
+                                    else {
+                                        definiteOccurence = true;
+                                        break;
+                                    }
+                                }
+                                lineIndex++;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if(!definiteOccurence) {
+                            if (possibleOccurenceLineNums.size() > 1) {
+                                for (int i = 0; i < possibleOccurenceLineNums.size(); i++) {
+                                    possibleOccurenceArray[possibleOccurenceLineNums.get(i)] = true;
+                                }
+                            }
+                            else{
+                                definiteDeadCodeArray[possibleOccurenceLineNums.get(0)] = true;
+                            }
+                        }
+                    }
+                }
+
+                System.out.println("\nPrivate Definite Dead Code:");
+                try { BufferedReader br = new BufferedReader(new FileReader(f));
+                    String line;
+                    for(int i=0; i<definiteDeadCodeArray.length; i++){
+                        line = br.readLine();
+                        if(definiteDeadCodeArray[i]) {
+                            System.out.println((i+1) + " " + line.trim());
+                        }
+                    }
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("\nPrivate Possible Dead Code:");
+                try { BufferedReader br = new BufferedReader(new FileReader(f));
+                    String line;
+                    for(int i=0; i<possibleOccurenceArray.length; i++){
+                        line = br.readLine();
+                        if(possibleOccurenceArray[i]) {
+                            System.out.println((i+1) + " " + line.trim());
+                        }
+                    }
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void checkPublicMethods(List<ClassMethod<String, String>> unused){
         for(File f : FileHandler.uploadedFiles) {
             boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
             boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
@@ -57,7 +141,7 @@ public class DeadCode extends JButton implements ActionListener {
                             // if line != method call ever then aadd to dead code
                             if(line.contains(" ".concat(cm.getMethodName().concat("("))) || line.contains(".".concat(cm.getMethodName().concat("(")))) {
                                 // if method call is a declaration
-                                if (line.contains(Literals.PUBLIC) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+                                if (line.contains(Literals.PUBLIC) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
                                     possibleOccurenceLineNums.add(lineIndex);
                                 }
                                 else {
@@ -82,8 +166,32 @@ public class DeadCode extends JButton implements ActionListener {
                     }
                 }
             }
-            for(int i=0; i<definiteDeadCodeArray.length; i++){
-                System.out.println();
+
+            System.out.println("\nPublic Definite Dead Code:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<definiteDeadCodeArray.length; i++){
+                    line = br.readLine();
+                    if(definiteDeadCodeArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("\nPublic Possible Dead Code:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<possibleOccurenceArray.length; i++){
+                    line = br.readLine();
+                    if(possibleOccurenceArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -162,18 +270,18 @@ public class DeadCode extends JButton implements ActionListener {
 //        }
 //    }
 //
-//    private boolean isInterface(File f) {
-//        try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-//            for(String line; (line = br.readLine()) != null; ) {
-//                if(line.contains("public interface")) {
-//                    return true;
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
+    private boolean isInterface(File f) {
+        try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+            for(String line; (line = br.readLine()) != null; ) {
+                if(line.contains("public interface")) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 //
 //    private boolean isUsed(String methodDef, String className) {
 //        for(ClassObjectTuple<String, String> cot: cml) {
@@ -186,9 +294,9 @@ public class DeadCode extends JButton implements ActionListener {
 //        return false;
 //    }
 //
-//    private String getMethodDef(String line) {
-//        String cut = line.substring(0,line.indexOf(Literals.O_BRACKET)).trim();
-//        String[] cutSplit = cut.trim().split(" ");
-//        return cutSplit[ cutSplit.length - 1 ].trim();
-//    }
+    private String getMethodDef(String line) {
+        String cut = line.substring(0,line.indexOf(Literals.O_BRACKET)).trim();
+        String[] cutSplit = cut.trim().split(" ");
+        return cutSplit[ cutSplit.length - 1 ].trim();
+    }
 }
