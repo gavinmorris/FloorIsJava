@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
 public class DuplicatedCode extends JButton implements ActionListener {
@@ -25,16 +24,9 @@ public class DuplicatedCode extends JButton implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        //hii
-        //yee
-        //too
     }
 
     public void report(){
-
-        //hii
-        //yee
-        //too
         System.out.println("\n\n ----- Duplicated Code ----- ");
         System.out.println("3-4 lines: warning");
         System.out.println("5-6 lines: bad");
@@ -61,6 +53,9 @@ public class DuplicatedCode extends JButton implements ActionListener {
                     line = line.trim();
                     if(!line.equals("")){
                         if(!line.equals("{") && !line.equals("}")) {
+                            while(line.endsWith("{") || line.endsWith("}")){
+                                line = line.substring(0, line.length()-1).trim();
+                            }
                             file.add(line);
                         }
                         else{
@@ -86,7 +81,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                         + ", totalNumLines: " + totalNumLines + ", actualNumLines: " + actualNumLines);
 
 
-                System.out.println("10: " + convertActualToTotalLineNum(10, blankLines, curlyLines));
+//                System.out.println("10: " + convertActualToTotalLineNum(10, blankLines, curlyLines));
 
 
                 bigLoop:
