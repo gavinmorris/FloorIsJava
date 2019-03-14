@@ -82,6 +82,8 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		int endIndex = cut.indexOf("(");
 		return cut.substring(cut.indexOf(".")+1, endIndex);
 	}
+	
+
 
 	//TODO: work with new approach
 	private void getObject(String line, String fileName) {

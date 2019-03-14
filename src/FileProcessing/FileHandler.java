@@ -29,6 +29,7 @@ public class FileHandler {
         return classes;
     }
     
+    
     public static String removeExtension(String fileName) {
     	return fileName.replace(".java", "").trim();
     }
