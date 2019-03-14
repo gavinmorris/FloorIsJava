@@ -16,6 +16,8 @@ import General.ClassObjectTuple;
 
 import javax.swing.*;
 
+
+
 public class InappropriateIntimacy extends JButton implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -37,11 +39,12 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		
 	}
 
-	public void report() {
+	public List<ClassMethod<String, String>> report() {
 		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
 		checkMethods();
 		print();
+		return unused;
 	}
 	
 	private void print() {
