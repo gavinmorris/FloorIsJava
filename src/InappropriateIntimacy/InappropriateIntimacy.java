@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import FileProcessing.FileHandler;
 import General.Literals;
+import General.ClassMethod;
 import General.ClassObjectTuple;
 
 import javax.swing.*;
@@ -21,7 +21,8 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	private List<ClassObjectTuple<String,String>> cml = new ArrayList<ClassObjectTuple<String,String>>();
-	private List<String> unused = new ArrayList<String>();
+	private List<ClassMethod<String, String>> unused = new ArrayList<ClassMethod<String, String>>();
+
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
 			@Override
@@ -44,8 +45,8 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	}
 	
 	private void print() {
-		for(String methods: unused) {
-			System.out.println(methods);
+		for(ClassMethod<String, String> cm: unused) {
+			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
 		}
 	}
 	
@@ -106,7 +107,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	    		    		String method = getMethodDef(line);
 	    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
 	    		    			if(!unused.contains(method))
-	    		    				unused.add(method);
+	    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
 	    		    		}
 	    		    	}
 	    		    }
