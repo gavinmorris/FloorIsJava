@@ -3,6 +3,7 @@ package DeadCode;
 import FileProcessing.FileHandler;
 import General.ClassMethod;
 import General.ClassObjectTuple;
+import General.ClassVariable;
 import General.Literals;
 import InappropriateIntimacy.InappropriateIntimacy;
 
@@ -32,17 +33,153 @@ public class DeadCode extends JButton implements ActionListener {
         System.out.println("-------Public Methods to be made private.---------");
         checkPublicMethods(new InappropriateIntimacy().report());
         checkPrivateMethods();
-        checkProtectedMethods();
-//        lookForObjects();
-//        checkMethods();
+        checkProtectedMethods(new InappropriateIntimacy().report());
+        checkPublicVariables(new ArrayList<ClassVariable<String, String>>());
+        checkPrivateVariables();
+        checkProtectedVariables(new ArrayList<ClassVariable<String, String>>());
     }
 
-    //public voidd getBob(){
-    //public void sgetBob(){
 
-    private void checkProtectedMethods(){
+    private void checkPublicMethods(List<ClassMethod<String, String>> unused){
+        for(File f : FileHandler.uploadedFiles) {
+            boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
+            boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
+            for (ClassMethod<String, String> cm : unused) {
+                if(cm.getClassName().equals(FileHandler.removeExtension(f.getName()))){
+                    boolean definiteOccurence = false;
+                    ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
 
+                    try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                        int lineIndex=0;
+                        for(String line; (line = br.readLine()) != null; ) {
+                            // if line != method call ever then aadd to dead code
+                            if(line.contains(" ".concat(cm.getMethodName().concat("("))) || line.contains(".".concat(cm.getMethodName().concat("(")))) {
+                                // if method call is a declaration
+                                if (line.contains(Literals.PUBLIC) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                                    possibleOccurenceLineNums.add(lineIndex);
+                                }
+                                else {
+                                    definiteOccurence = true;
+                                    break;
+                                }
+                            }
+                            lineIndex++;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(!definiteOccurence) {
+                        if (possibleOccurenceLineNums.size() > 1) {
+                            for (int i = 0; i < possibleOccurenceLineNums.size(); i++) {
+                                possibleOccurenceArray[possibleOccurenceLineNums.get(i)] = true;
+                            }
+                        }
+                        else{
+                            definiteDeadCodeArray[possibleOccurenceLineNums.get(0)] = true;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("\nPublic Definite Dead Code:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<definiteDeadCodeArray.length; i++){
+                    line = br.readLine();
+                    if(definiteDeadCodeArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("\nPublic Possible Dead Code:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<possibleOccurenceArray.length; i++){
+                    line = br.readLine();
+                    if(possibleOccurenceArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    private void checkPublicVariables(List<ClassVariable<String, String>> unused){
+        for(File f : FileHandler.uploadedFiles) {
+            boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
+            boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
+            for (ClassVariable<String, String> cv : unused) {
+                if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
+                    boolean definiteOccurence = false;
+                    ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
+
+                    try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                        int lineIndex=0;
+                        for(String line; (line = br.readLine()) != null; ) {
+                            // if line != method call ever then aadd to dead code
+                            if(line.contains(cv.getVariableName())) {
+                                // if method call is a declaration
+                                if (line.contains(Literals.PUBLIC) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                                    possibleOccurenceLineNums.add(lineIndex);
+                                }
+                                else {
+                                    definiteOccurence = true;
+                                    break;
+                                }
+                            }
+                            lineIndex++;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(!definiteOccurence) {
+                        if (possibleOccurenceLineNums.size() > 1) {
+                            for (int i = 0; i < possibleOccurenceLineNums.size(); i++) {
+                                possibleOccurenceArray[possibleOccurenceLineNums.get(i)] = true;
+                            }
+                        }
+                        else{
+                            definiteDeadCodeArray[possibleOccurenceLineNums.get(0)] = true;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("\nPublic Definite Dead Code (Variables):");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<definiteDeadCodeArray.length; i++){
+                    line = br.readLine();
+                    if(definiteDeadCodeArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("\nPublic Possible Dead Code:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<possibleOccurenceArray.length; i++){
+                    line = br.readLine();
+                    if(possibleOccurenceArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void checkPrivateMethods(){
         for(File f : FileHandler.uploadedFiles) {
@@ -126,7 +263,92 @@ public class DeadCode extends JButton implements ActionListener {
         }
     }
 
-    private void checkPublicMethods(List<ClassMethod<String, String>> unused){
+    private void checkPrivateVariables(){
+        for(File f : FileHandler.uploadedFiles) {
+            if(!isInterface(f)) {
+                List<ClassVariable<String, String>> variables = new ArrayList<>();
+                try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                    for(String line; (line = br.readLine()) != null; ) {
+                        // if line contains a variable (not a method) add to list
+                        if(line.contains(Literals.PRIVATE) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                            variables.add(new ClassVariable<>(FileHandler.removeExtension(f.getName()), getMethodDef(line)));
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
+                boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
+                for (ClassVariable<String, String> cv : variables) {
+                    if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
+                        boolean definiteOccurence = false;
+                        ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
+
+                        try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                            int lineIndex=0;
+                            for(String line; (line = br.readLine()) != null; ) {
+                                // if line != method call ever then aadd to dead code
+                                if(line.contains(" ".concat(cv.getVariableName().concat("("))) || line.contains(".".concat(cv.getVariableName().concat("(")))) {
+                                    // if method call is a declaration
+                                    // if line contains a variable (not a method) add to list
+                                    if (line.contains(Literals.PRIVATE) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                                        possibleOccurenceLineNums.add(lineIndex);
+                                    }
+                                    else {
+                                        definiteOccurence = true;
+                                        break;
+                                    }
+                                }
+                                lineIndex++;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if(!definiteOccurence) {
+                            if (possibleOccurenceLineNums.size() > 1) {
+                                for (int i = 0; i < possibleOccurenceLineNums.size(); i++) {
+                                    possibleOccurenceArray[possibleOccurenceLineNums.get(i)] = true;
+                                }
+                            }
+                            else{
+                                definiteDeadCodeArray[possibleOccurenceLineNums.get(0)] = true;
+                            }
+                        }
+                    }
+                }
+
+                System.out.println("\nPrivate Definite Dead Code Variables:");
+                try { BufferedReader br = new BufferedReader(new FileReader(f));
+                    String line;
+                    for(int i=0; i<definiteDeadCodeArray.length; i++){
+                        line = br.readLine();
+                        if(definiteDeadCodeArray[i]) {
+                            System.out.println((i+1) + " " + line.trim());
+                        }
+                    }
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("\nPrivate Possible Dead Code Variables:");
+                try { BufferedReader br = new BufferedReader(new FileReader(f));
+                    String line;
+                    for(int i=0; i<possibleOccurenceArray.length; i++){
+                        line = br.readLine();
+                        if(possibleOccurenceArray[i]) {
+                            System.out.println((i+1) + " " + line.trim());
+                        }
+                    }
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    private void checkProtectedMethods(List<ClassMethod<String, String>> unused){
         for(File f : FileHandler.uploadedFiles) {
             boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
             boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
@@ -195,6 +417,81 @@ public class DeadCode extends JButton implements ActionListener {
             }
         }
     }
+
+    private void checkProtectedVariables(List<ClassVariable<String, String>> unused){
+        for(File f : FileHandler.uploadedFiles) {
+            boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
+            boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
+            for (ClassVariable<String, String> cv : unused) {
+                if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
+                    boolean definiteOccurence = false;
+                    ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
+
+                    try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+                        int lineIndex=0;
+                        for(String line; (line = br.readLine()) != null; ) {
+                            // if line != method call ever then aadd to dead code
+                            if(line.contains(" ".concat(cv.getVariableName().concat("("))) || line.contains(".".concat(cv.getVariableName().concat("(")))) {
+                                // if method call is a declaration
+                                // if line contains variable (not method)
+                                if (line.contains(Literals.PUBLIC) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
+                                    possibleOccurenceLineNums.add(lineIndex);
+                                }
+                                else {
+                                    definiteOccurence = true;
+                                    break;
+                                }
+                            }
+                            lineIndex++;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(!definiteOccurence) {
+                        if (possibleOccurenceLineNums.size() > 1) {
+                            for (int i = 0; i < possibleOccurenceLineNums.size(); i++) {
+                                possibleOccurenceArray[possibleOccurenceLineNums.get(i)] = true;
+                            }
+                        }
+                        else{
+                            definiteDeadCodeArray[possibleOccurenceLineNums.get(0)] = true;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("\nPublic Definite Dead Code Variables:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<definiteDeadCodeArray.length; i++){
+                    line = br.readLine();
+                    if(definiteDeadCodeArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("\nPublic Possible Dead Code Variables:");
+            try { BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                for(int i=0; i<possibleOccurenceArray.length; i++){
+                    line = br.readLine();
+                    if(possibleOccurenceArray[i]) {
+                        System.out.println((i+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 
 //    private void print() {
 //        for(ClassMethod<String, String> cm: unused) {
