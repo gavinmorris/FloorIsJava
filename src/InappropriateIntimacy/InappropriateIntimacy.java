@@ -77,11 +77,17 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 	}
 	
 	private String getMethodCall(String line, String objectName) {
-	    System.out.println(line);
 		int startIndex = line.indexOf(objectName+".");
 		String cut = line.substring(startIndex);
-		int endIndex = cut.indexOf("(");
-        System.out.println(line.substring(startIndex));
+		int index = 0;
+		int endIndex = 0;
+		for(char c : cut.toCharArray()) {
+			if(!(Character.isAlphabetic(c) || Character.isDigit(c))) {
+				endIndex = index;
+			}else {
+				index++;
+			}
+		}
 		return cut.substring(cut.indexOf(".")+1, endIndex);
 	}
 	
