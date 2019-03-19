@@ -1,12 +1,12 @@
 package DeadCode;
 
 import FileProcessing.FileHandler;
-import General.ClassMethod;
-import General.ClassObjectTuple;
-import General.ClassVariable;
-import General.Literals;
-import General.Smells;
 import InappropriateIntimacy.InappropriateIntimacy;
+import Utilities.ClassMethod;
+import Utilities.ClassObjectTuple;
+import Utilities.ClassVariable;
+import Utilities.Literals;
+import Utilities.Smells;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

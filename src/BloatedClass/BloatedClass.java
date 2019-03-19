@@ -2,11 +2,10 @@ package BloatedClass;
 
 import javax.swing.*;
 
-
-import General.Smells;
-
 import FileProcessing.FileHandler;
-import General.ClassObjectTuple;
+import Utilities.ClassObjectTuple;
+import Utilities.Literals;
+import Utilities.Smells;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,8 +62,8 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
     			 for(String line; (line = br.readLine()) != null;) {
     				 	
     				 //checks if its the method declaration
-    				 if(line.contains(AccessSpecifiers.PUBLIC) || line.contains(AccessSpecifiers.PRIVATE)
-    						 || line.contains(AccessSpecifiers.PROTECTED) || line.contains("void")) {
+    				 if(line.contains(Literals.PUBLIC) || line.contains(Literals.PRIVATE)
+    						 || line.contains(Literals.PROTECTED) || line.contains("void")) {
     					 
     					 	if(line.contains("(") && line.contains(")") && line.contains("{")) {
     					 
@@ -75,7 +74,7 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
     						 	 
     					 }
     				 if(linesInMethod != 0) {
-    					 if(line.contains(AccessSpecifiers.PUBLIC)) {
+    					 if(line.contains(Literals.PUBLIC)) {
     						 continue;
     					 }else {
     						 countLinesInMethod();

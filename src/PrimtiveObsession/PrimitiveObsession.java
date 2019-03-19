@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.List;
 
 import FileProcessing.FileHandler;
-import General.Literals;
-import General.Smells;
+import Utilities.Literals;
+import Utilities.Smells;
 
 import javax.swing.*;
 

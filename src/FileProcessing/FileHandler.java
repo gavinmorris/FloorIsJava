@@ -1,4 +1,4 @@
-package FileProcessing;
+	package FileProcessing;
 
 
 import java.io.File;
@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import General.SuperSub;
+import Utilities.SuperSub;
 
 public class FileHandler {
 
