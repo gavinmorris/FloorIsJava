@@ -5,6 +5,7 @@ import General.ClassMethod;
 import General.ClassObjectTuple;
 import General.ClassVariable;
 import General.Literals;
+import General.Smells;
 import InappropriateIntimacy.InappropriateIntimacy;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeadCode extends JButton implements ActionListener {
+public class DeadCode extends JButton implements ActionListener, Smells {
 
     public DeadCode(){
         this.addActionListener(new ActionListener() {
@@ -31,9 +32,9 @@ public class DeadCode extends JButton implements ActionListener {
 
     public void report() {
         System.out.println("-------Public Methods to be made private.---------");
-        checkPublicMethods(new InappropriateIntimacy().report());
+        checkPublicMethods((List<ClassMethod<String, String>>) new ClassMethod<String, String>("",""));
         checkPrivateMethods();
-        checkProtectedMethods(new InappropriateIntimacy().report());
+        checkProtectedMethods((List<ClassMethod<String, String>>) new ClassMethod<String, String>("",""));
         checkPublicVariables(new ArrayList<ClassVariable<String, String>>());
         checkPrivateVariables();
         checkProtectedVariables(new ArrayList<ClassVariable<String, String>>());

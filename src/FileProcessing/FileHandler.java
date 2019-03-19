@@ -6,10 +6,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import General.SuperSub;
+
 public class FileHandler {
 
     public static ArrayList<File> uploadedFiles = new ArrayList<File>();
     public static ArrayList<String> classes = new ArrayList<String>();
+    public static ArrayList<SuperSub<String, String>> supersub = new ArrayList<SuperSub<String, String>>();
+    
     public static void addNewFile(Path path){
         if(isFileTypeJava(path.toString()))
         	uploadedFiles.add(new File(path.toString()));
@@ -38,5 +42,11 @@ public class FileHandler {
 		String[] strArr = line.substring(line.indexOf(className)).split(" ");
 		return strArr[1].trim();
 	}
+	
+	public static String getSuperclass(String line) {
+		int startIndex = line.indexOf("extends");
+		return line.substring(startIndex).split(" ")[1].trim();
 
+	}
+	
 }

@@ -5,8 +5,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +18,9 @@ import java.util.*;
 import java.util.List;
 
 import FileProcessing.FileHandler;
+import General.ClassObjectTuple;
+import General.Literals;
+import General.SuperSub;
 import InappropriateIntimacy.InappropriateIntimacy;
 import PrimtiveObsession.PrimitiveObsession;
 
@@ -66,6 +71,22 @@ public class JFileChooserUploader extends JPanel implements ActionListener {
 			}
 
 			FileHandler.classes = FileHandler.getClasses();
+			
+			//get subclasses
+			for(File f : FileHandler.uploadedFiles) {
+				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+	    		    for(String line; (line = br.readLine()) != null; ) {
+	    		        if(line.contains("extends") && line.contains("class")) {
+	    		        	String superClass = FileHandler.getSuperclass(line);
+	    		        	if(FileHandler.classes.contains(superClass)) {
+	    		        		FileHandler.supersub.add(new SuperSub<String, String>(superClass, FileHandler.removeExtension(f.getName())));
+	    		        	}
+	    		        }
+	    		    }
+	    		} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+	    	}
 
 //			InappropriateIntimacy obj = new InappropriateIntimacy();
 //			obj.getPublicMethods();

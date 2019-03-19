@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import FileProcessing.FileHandler;
 import General.Literals;
+import General.Smells;
 import General.ClassMethod;
 import General.ClassObjectTuple;
 
@@ -18,7 +19,7 @@ import javax.swing.*;
 
 
 
-public class InappropriateIntimacy extends JButton implements ActionListener {
+public class InappropriateIntimacy extends JButton implements ActionListener, Smells {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,13 +39,12 @@ public class InappropriateIntimacy extends JButton implements ActionListener {
 		report();
 		
 	}
-
-	public List<ClassMethod<String, String>> report() {
+	
+	public void report() {
 		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
 		checkMethods();
 		print();
-		return unused;
 	}
 	
 	private void print() {

@@ -10,11 +10,12 @@ import java.util.List;
 
 import FileProcessing.FileHandler;
 import General.Literals;
+import General.Smells;
 
 import javax.swing.*;
 
 
-public class PrimitiveObsession extends JButton implements PO, ActionListener {
+public class PrimitiveObsession extends JButton implements Smells , ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private List<String> classes = FileHandler.classes;
