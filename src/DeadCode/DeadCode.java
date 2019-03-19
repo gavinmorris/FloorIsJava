@@ -31,11 +31,11 @@ public class DeadCode extends JButton implements ActionListener {
 
     public void report() {
         System.out.println("-------Public Methods never called---------");
-        checkPublicMethods(new InappropriateIntimacy().report());
+        checkPublicMethods(new ArrayList<ClassMethod<String, String>>());
         System.out.println("-------Private Methods never called---------");
         checkPrivateMethods();
         System.out.println("-------Protected Methods never called---------");
-        checkProtectedMethods(new InappropriateIntimacy().report());
+        checkProtectedMethods(new ArrayList<ClassMethod<String,String>>());
         System.out.println("-------Public Variables never used---------");
         checkPublicVariables(new ArrayList<ClassVariable<String, String>>());
         System.out.println("-------Private Variables never used---------");
