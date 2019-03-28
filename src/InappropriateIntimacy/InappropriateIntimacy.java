@@ -15,10 +15,9 @@ import Utilities.ClassObjectTuple;
 import Utilities.FileParser;
 import Utilities.Literals;
 import Utilities.Smells;
+import Utilities.SuperSub;
 
 import javax.swing.*;
-
-
 
 public class InappropriateIntimacy extends JButton implements ActionListener, Smells {
 
@@ -48,6 +47,11 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		print();
 	}
 	
+	public List<ClassMethod<String, String>> getUnused() {
+		report();
+		return unused;
+	}
+	
 	private void print() {
 		for(ClassMethod<String, String> cm: unused) {
 			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
@@ -58,18 +62,20 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		for(File f : FileHandler.uploadedFiles) {
     		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
     		    for(String line; (line = br.readLine()) != null; ) {
-    		        if(FileParser.isClassDef(line)) {
-    		        	getObject(line.trim(), FileHandler.removeExtension(f.getName()));
-    		        }else {
-	    		        for(ClassObjectTuple<String,String> cot : cml) {
-	    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
-	    		        		String methodName = FileParser.getMethodCall(line, cot.getObjectName()).trim();
-	    		        		if(!cot.methodExists(methodName)) {
-	    		        			cot.addMethodName(methodName);
-	    		        		}
+    		    	if(!FileParser.isComment(line)) {
+	    		        if(FileParser.isClassDef(line)) {
+	    		        	getObject(line.trim(), FileHandler.removeExtension(f.getName()));
+	    		        }else {
+		    		        for(ClassObjectTuple<String,String> cot : cml) {
+		    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
+		    		        		String methodName = FileParser.getMethodCall(line, cot.getObjectName()).trim();
+		    		        		if(!cot.methodExists(methodName)) {
+		    		        			cot.addMethodName(methodName);
+		    		        		}
+		    		        	}
 	    		        	}
-    		        	}
-    		        }
+	    		        }
+    		    	}
     		    }
     		} catch (IOException e) {
 				e.printStackTrace();
@@ -91,12 +97,21 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 			if(!FileParser.isInterface(f)) {
 				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 	    		    for(String line; (line = br.readLine()) != null; ) {
-	    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
-	    		    		String method = FileParser.getMethodDef(line);
-	    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
-	    		    			if(!unused.contains(method))
-	    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
-	    		    		}
+	    		    	if(!FileParser.isComment(line)) {
+		    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+		    		    		String method = FileParser.getMethodDef(line);
+		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
+		    		    			if(!unused.contains(method))
+		    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    		}
+		    		    	}
+		    		    	else if(line.contains(Literals.PROTECTED ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+		    		    		String method = FileParser.getMethodDef(line);
+		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
+		    		    			if(!unused.contains(method))
+		    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    		}
+		    		    	}
 	    		    	}
 	    		    }
 	    		} catch (IOException e) {
@@ -117,5 +132,4 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		return false;
 	}
 
-	
 }

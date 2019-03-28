@@ -51,6 +51,12 @@ public class FileParser {
 		}
 		return cut.substring(cut.indexOf(".")+1, endIndex);
 	}
-	
+	public static boolean isComment(String line) {
+		if(line.trim().startsWith("//")) {
+			return true;
+		}
+		return false;
+	}
+
 	
 }
