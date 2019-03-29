@@ -43,8 +43,22 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	public void report() {
 		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
-		checkMethods();
+		lookForVariables();
+		checkPublicMethods();
 		print();
+	}
+
+	private void lookForVariables() {
+		for(File f : FileHandler.uploadedFiles) {
+    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+    		    for(String line; (line = br.readLine()) != null; ) {
+    		    	
+    		    }
+    		} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+		
 	}
 	
 	public List<ClassMethod<String, String>> getUnused() {
@@ -58,29 +72,41 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		}
 	}
 	
+	
 	private void lookForObjects() {
+		//loop through files
 		for(File f : FileHandler.uploadedFiles) {
-    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-    		    for(String line; (line = br.readLine()) != null; ) {
-    		    	if(!FileParser.isComment(line)) {
-	    		        if(FileParser.isClassDef(line)) {
-	    		        	getObject(line.trim(), FileHandler.removeExtension(f.getName()));
-	    		        }else {
-		    		        for(ClassObjectTuple<String,String> cot : cml) {
-		    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
-		    		        		String methodName = FileParser.getMethodCall(line, cot.getObjectName()).trim();
-		    		        		if(!cot.methodExists(methodName)) {
-		    		        			cot.addMethodName(methodName);
-		    		        		}
+			//file cannot be an interface
+			if(!FileParser.isInterface(f)) {
+	    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+	    		    for(String line; (line = br.readLine()) != null; ) {
+	    		    	//if line is not a comment proceed
+	    		    	if(!FileParser.isComment(line)) {
+	    		    		//if this line contains a class definition, proceed
+		    		        if(FileParser.isClassDef(line)) {
+		    		        	//get object and add to list
+		    		        	getObject(line.trim(), FileHandler.removeExtension(f.getName()));
+		    		        }else {
+		    		        	//if not a class def check for object call, loop through the call 
+			    		        for(ClassObjectTuple<String,String> cot : cml) {
+			    		        	//make sure that the class of the object does not match the file it is looking in
+			    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
+			    		        		//get method name
+			    		        		String methodName = FileParser.getMethodCall(line, cot.getObjectName()).trim();
+			    		        		//if the method has not already been added it, add the method
+			    		        		if(!cot.methodExists(methodName)) {
+			    		        			cot.addMethodName(methodName);
+			    		        		}
+			    		        	}
 		    		        	}
-	    		        	}
-	    		        }
-    		    	}
-    		    }
-    		} catch (IOException e) {
-				e.printStackTrace();
+		    		        }
+	    		    	}
+	    		    }
+	    		} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-    	}
+		}
 	}
 	
 
@@ -92,21 +118,19 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		}
 	}
 	
-	private void checkMethods() {
+	private void checkPublicMethods() {
 		for(File f : FileHandler.uploadedFiles) {
+			//if the class is not an interface, proceed
 			if(!FileParser.isInterface(f)) {
 				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 	    		    for(String line; (line = br.readLine()) != null; ) {
+	    		    	//if line is not a comment, proceed
 	    		    	if(!FileParser.isComment(line)) {
+	    		    		//check if it is a public method
 		    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+		    		    		//get method name
 		    		    		String method = FileParser.getMethodDef(line);
-		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
-		    		    			if(!unused.contains(method))
-		    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
-		    		    		}
-		    		    	}
-		    		    	else if(line.contains(Literals.PROTECTED ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
-		    		    		String method = FileParser.getMethodDef(line);
+		    		    		//check if this method has been used and that the method is not a constructor
 		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
 		    		    			if(!unused.contains(method))
 		    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
