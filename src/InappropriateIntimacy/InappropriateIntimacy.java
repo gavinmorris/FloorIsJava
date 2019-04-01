@@ -22,10 +22,11 @@ import javax.swing.*;
 public class InappropriateIntimacy extends JButton implements ActionListener, Smells {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	private List<ClassObjectTuple<String,String>> cml = new ArrayList<ClassObjectTuple<String,String>>();
-	private List<ClassMethod<String, String>> unused = new ArrayList<ClassMethod<String, String>>();
-
+	private List<ClassMethod<String, String>> unusedMethods = new ArrayList<ClassMethod<String, String>>();
+	private List<ClassMethod<String, String>> unusedVariables = new ArrayList<ClassMethod<String, String>>();
+	
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
 			@Override
@@ -43,31 +44,22 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	public void report() {
 		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
-		lookForVariables();
 		checkPublicMethods();
+		checkPublicVariables();
 		print();
 	}
 
-	private void lookForVariables() {
-		for(File f : FileHandler.uploadedFiles) {
-    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-    		    for(String line; (line = br.readLine()) != null; ) {
-    		    	
-    		    }
-    		} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
-		
-	}
 	
 	public List<ClassMethod<String, String>> getUnused() {
 		report();
-		return unused;
+		return unusedMethods;
 	}
 	
 	private void print() {
-		for(ClassMethod<String, String> cm: unused) {
+		for(ClassMethod<String, String> cm: unusedMethods) {
+			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
+		}
+		for(ClassMethod<String, String> cm: unusedVariables) {
 			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
 		}
 	}
@@ -78,6 +70,9 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		for(File f : FileHandler.uploadedFiles) {
 			//file cannot be an interface
 			if(!FileParser.isInterface(f)) {
+				//for static methods
+				String className = FileHandler.removeExtension(f.getName());
+				cml.add(new ClassObjectTuple<String, String>(className, className));
 	    		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
 	    		    for(String line; (line = br.readLine()) != null; ) {
 	    		    	//if line is not a comment proceed
@@ -90,7 +85,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		    		        	//if not a class def check for object call, loop through the call 
 			    		        for(ClassObjectTuple<String,String> cot : cml) {
 			    		        	//make sure that the class of the object does not match the file it is looking in
-			    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".") && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)){
+			    		        	if(!cot.getClassName().equals(FileHandler.removeExtension(f.getName())) && line.contains(cot.getObjectName()+".")){
 			    		        		//get method name
 			    		        		String methodName = FileParser.getMethodCall(line, cot.getObjectName()).trim();
 			    		        		//if the method has not already been added it, add the method
@@ -127,15 +122,41 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	    		    	//if line is not a comment, proceed
 	    		    	if(!FileParser.isComment(line)) {
 	    		    		//check if it is a public method
-		    		    	if(line.contains(Literals.PUBLIC ) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET)) {
+		    		    	if((line.trim().startsWith(Literals.PUBLIC) || line.trim().startsWith(Literals.PROTECTED)) && line.trim().contains(Literals.O_BRACKET) && line.trim().contains(Literals.C_BRACKET)) {
 		    		    		//get method name
 		    		    		String method = FileParser.getMethodDef(line);
 		    		    		//check if this method has been used and that the method is not a constructor
 		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
-		    		    			if(!unused.contains(method))
-		    		    				unused.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    			if(!unusedMethods.contains(method))
+		    		    				unusedMethods.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
 		    		    		}
 		    		    	}
+	    		    	}
+	    		    }
+	    		} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private void checkPublicVariables() {
+		for(File f : FileHandler.uploadedFiles) {
+			//if the class is not an interface, proceed
+			if(!FileParser.isInterface(f)) {
+				try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+	    		    for(String line; (line = br.readLine()) != null; ) {
+	    		    	//if line is not a comment, proceed
+	    		    	if(!FileParser.isComment(line)) {
+	    		    		//if line starts with public and doesn't contain brackets;
+	    		    		if(line.trim().startsWith(Literals.PUBLIC) && !(line.contains(Literals.O_BRACKET) || line.contains(Literals.C_BRACKET))&&line.contains(Literals.EQUALS)) {
+	    		    			//get variable definition
+	    		    			String variable = FileParser.getVariableDef(line.trim());
+	    		    			if(!isUsed(variable,FileHandler.removeExtension(f.getName())) && !variable.equals(FileHandler.removeExtension(f.getName()))) {
+		    		    			if(!unusedVariables.contains(variable))
+		    		    				unusedVariables.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), variable));
+		    		    		}
+	    		    		}
 	    		    	}
 	    		    }
 	    		} catch (IOException e) {

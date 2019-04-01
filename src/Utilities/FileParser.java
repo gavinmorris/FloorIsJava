@@ -58,5 +58,9 @@ public class FileParser {
 		return false;
 	}
 
-	
+	public static String getVariableDef(String line) {
+		String cut = line.substring(0,line.indexOf(Literals.EQUALS)).trim();
+		String[] cutSplit = cut.trim().split(" ");
+		return cutSplit[ cutSplit.length - 1 ].trim();
+	}
 }
