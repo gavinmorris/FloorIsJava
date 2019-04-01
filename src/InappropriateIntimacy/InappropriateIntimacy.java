@@ -24,6 +24,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	private static final long serialVersionUID = 1L;
 	
 	private List<ClassObjectTuple<String,String>> cml = new ArrayList<ClassObjectTuple<String,String>>();
+	//protected and public methods
 	private List<ClassMethod<String, String>> unusedMethods = new ArrayList<ClassMethod<String, String>>();
 	private List<ClassMethod<String, String>> unusedVariables = new ArrayList<ClassMethod<String, String>>();
 	
