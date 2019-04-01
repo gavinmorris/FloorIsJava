@@ -40,16 +40,16 @@ public class FileParser {
 	public static String getMethodCall(String line, String objectName) {
 		int startIndex = line.indexOf(objectName+".");
 		String cut = line.substring(startIndex);
+		cut = cut.substring(cut.indexOf(".")+1);
 		int index = 0;
-		int endIndex = 0;
 		for(char c : cut.toCharArray()) {
-			if(!(Character.isAlphabetic(c) || Character.isDigit(c))) {
-				endIndex = index;
-			}else {
+			if(Character.isAlphabetic(c) || Character.isDigit(c)) {
 				index++;
+			}else {
+				break;
 			}
 		}
-		return cut.substring(cut.indexOf(".")+1, endIndex);
+		return cut.substring(0, index);
 	}
 	public static boolean isComment(String line) {
 		if(line.trim().startsWith("//")) {
