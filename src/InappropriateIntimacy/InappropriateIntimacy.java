@@ -51,9 +51,14 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	}
 
 	
-	public List<ClassMethod<String, String>> getUnused() {
+	public List<ClassMethod<String, String>> getUnusedMethods() {
 		report();
 		return unusedMethods;
+	}
+	
+	public List<ClassMethod<String, String>> getUnusedVariables() {
+		report();
+		return unusedVariables;
 	}
 	
 	private void print() {
