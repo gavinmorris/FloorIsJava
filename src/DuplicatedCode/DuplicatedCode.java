@@ -14,6 +14,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
     public ArrayList<boolean[]> allBadLines;
     public ArrayList<boolean[]> allHazardLines;
     public ArrayList<boolean[]> allConsecutiveLines;
+    private ArrayList<String> allFiles;
+    private ArrayList<String> currentFile;
 
     private ArrayList<String> file;
     private ArrayList<Integer> blankLines;
@@ -39,10 +41,12 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
     public void report(){
 
-        System.out.println("\n\n ----- Duplicated Code ----- ");
-        System.out.println("3-4 lines: warning");
-        System.out.println("5-6 lines: bad");
-        System.out.println("7-etc lines: hazard");
+        allFiles = new ArrayList<>();
+
+        allFiles.add("\n\n ----- Duplicated Code ----- ");
+        allFiles.add("3-4 lines: warning");
+        allFiles.add("5-6 lines: bad");
+        allFiles.add("7-etc lines: hazard");
 
         allWarningLines = new ArrayList<>();
         allBadLines = new ArrayList<>();
@@ -53,6 +57,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
             File f = FileHandler.uploadedFiles.get(fileNum);
             try(BufferedReader br0 = new BufferedReader(new FileReader(f))) {
 
+                currentFile = new ArrayList<>();
                 file = new ArrayList<>();
                 blankLines = new ArrayList<>();
                 curlyLines = new ArrayList<>();
@@ -116,7 +121,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 currentHazardLines = new boolean[(int) totalNumLines];
                 currentConsecutiveLines = new boolean[(int) totalNumLines];
 
-                System.out.println("\n\nClass: " + f.getName()
+                currentFile.add("\n\nClass: " + f.getName()
                         + ", totalNumLines: " + totalNumLines + ", actualNumLines: " + actualNumLines);
 
                 bigLoop:
@@ -272,6 +277,21 @@ public class DuplicatedCode extends JButton implements ActionListener {
 //                allConsecutiveLines.add();
 
                 BufferedReader br = new BufferedReader(new FileReader(f));
+                for(int j=0; j<totalNumLines; j++){
+                    line = br.readLine();
+                    if(allHazardLines.get(allHazardLines.size()-1)[j]){
+                        System.out.println((j+1) + " " + line.trim());
+                    }
+                    if(allBadLines.get(allBadLines.size()-1)[j]){
+                        System.out.println((j+1) + " " + line.trim());
+                    }
+                    if(allWarningLines.get(allWarningLines.size()-1)[j]){
+                        System.out.println((j+1) + " " + line.trim());
+                    }
+                }
+                br.close();
+
+                br = new BufferedReader(new FileReader(f));
                 System.out.println("\nHazard Lines:");
                 for(int j=0; j<totalNumLines; j++){
                     line = br.readLine();

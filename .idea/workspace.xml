@@ -2,48 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="760de80a-7122-46fe-a26e-95f1e572cded" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Utilities/FileParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/Utilities/FileParser.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/Utilities/Literals.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/Utilities/Smells.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BloatedClass/AccessSpecifiers.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataOnlyClass/DataOnlyClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataOnlyClass/DataOnlyClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileProcessing/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FileProcessing/FileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/JFileChooserUploader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/JFileChooserUploader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/ClassMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/ClassMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/ClassObjectTuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/ClassObjectTuple.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/ClassVariable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/ClassVariable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/Literals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/Literals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/Smells.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/Smells.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/General/SuperSub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/SuperSub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GodComplex/GodComplex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GodComplex/GodComplex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LazyClass/LazyClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LazyClass/LazyClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PrimtiveObsession/PrimitiveObsession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrimtiveObsession/PrimitiveObsession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TooManyLiterals/TooManyLiterals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TooManyLiterals/TooManyLiterals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/BloatedClass/AccessSpecifiers.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Run/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Run/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utilities/FileParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/FileParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utilities/Smells.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/Smells.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataOnlyClass/DataOnlyClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataOnlyClass/DataOnlyClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DeadCode/DeadCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DeadCode/DeadCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FileProcessing/FileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FileProcessing/FileHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GUI/JFileChooserUploader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GUI/JFileChooserUploader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/ClassMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/ClassMethod.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/ClassObjectTuple.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/ClassObjectTuple.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/ClassVariable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/ClassVariable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/Literals.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/Smells.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/General/SuperSub.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/SuperSub.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GodComplex/GodComplex$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GodComplex/GodComplex$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GodComplex/GodComplex.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/GodComplex/GodComplex.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/LazyClass/LazyClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/LazyClass/LazyClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/PrimtiveObsession/PrimitiveObsession.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/PrimtiveObsession/PrimitiveObsession.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/TooManyLiterals/TooManyLiterals.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/TooManyLiterals/TooManyLiterals.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Run/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Run/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Utilities/FileParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/FileParser.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +31,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="66" column="39" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
+            <state relative-caret-position="340">
+              <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
+              <folding>
+                <element signature="e#1025#1026#0" expanded="true" />
+                <element signature="e#1065#1066#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -78,11 +56,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="51" column="38" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="213">
+              <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -103,7 +78,7 @@
         <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+              <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -120,7 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>duplicateConsecutiveLines.add(</find>
       <find>duplicateSeparatedLines.add(</find>
       <find>currentLines.add(</find>
       <find>dupl</find>
@@ -150,6 +124,7 @@
       <find>currentHazardLines</find>
       <find>duplicateConsecutiveLineNums</find>
       <find>System.out.println</find>
+      <find>System.out.println(</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,9 +149,9 @@
         <option value="$PROJECT_DIR$/src/General/Literals.java" />
         <option value="$PROJECT_DIR$/src/General/ClassVariable.java" />
         <option value="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" />
-        <option value="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" />
         <option value="$PROJECT_DIR$/src/DeadCode/DeadCode.java" />
         <option value="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" />
+        <option value="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" />
       </list>
     </option>
   </component>
@@ -191,7 +166,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -233,6 +207,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -319,7 +294,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15431164" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12556732" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -327,7 +302,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.128" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.0544" />
+      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.1472" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="3" weight="0.0528" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -344,7 +319,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-      <window_info anchor="right" id="Run" order="8" weight="0.22692889" />
+      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.22768533" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
@@ -471,27 +446,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/General/ClassMethod.java" />
-    <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="66" column="39" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="38" column="74" selection-start-line="38" selection-start-column="74" selection-end-line="38" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="51" column="38" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -511,7 +469,25 @@
     <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
-          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
+          <folding>
+            <element signature="e#1025#1026#0" expanded="true" />
+            <element signature="e#1065#1066#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

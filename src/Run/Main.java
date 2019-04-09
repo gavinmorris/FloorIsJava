@@ -14,7 +14,7 @@ public class Main {
     public static JSmellChooser smells;
 
     public static void main(String[] args) {
-        frame = new JFrame("");
+        frame = new JFrame(" ");
         frame.setLayout(new BorderLayout());
         panel = new JFileChooserUploader();
         smells = new JSmellChooser();
