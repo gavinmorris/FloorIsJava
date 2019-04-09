@@ -2,10 +2,9 @@ package GodComplex;
 
 import javax.swing.*;
 
-import General.Smells;
-
-import BloatedClass.AccessSpecifiers;
 import FileProcessing.FileHandler;
+import Utilities.Literals;
+import Utilities.Smells;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,8 +91,8 @@ public class GodComplex extends JButton implements ActionListener , Smells{
     				
     				countNumberOfLines();
     				//check to see if its a method decalaration or not
-    				if(line.contains(AccessSpecifiers.PUBLIC) || line.contains(AccessSpecifiers.PRIVATE)
-   						 || line.contains(AccessSpecifiers.PROTECTED) || line.contains("void")) {
+    				if(line.contains(Literals.PUBLIC) || line.contains(Literals.PRIVATE)
+   						 || line.contains(Literals.PROTECTED) || line.contains("void")) {
     					
     					if(line.contains("(") && line.contains(")") && line.contains("{")) {
        					 

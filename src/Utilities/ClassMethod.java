@@ -1,4 +1,4 @@
-package General;
+package Utilities;
 
 
 public class ClassMethod<Class, Method> {

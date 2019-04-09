@@ -18,11 +18,11 @@ import java.util.*;
 import java.util.List;
 
 import FileProcessing.FileHandler;
-import General.ClassObjectTuple;
-import General.Literals;
-import General.SuperSub;
 import InappropriateIntimacy.InappropriateIntimacy;
 import PrimtiveObsession.PrimitiveObsession;
+import Utilities.ClassObjectTuple;
+import Utilities.Literals;
+import Utilities.SuperSub;
 
 public class JFileChooserUploader extends JPanel implements ActionListener {
 

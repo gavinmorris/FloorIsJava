@@ -2,7 +2,7 @@ package TooManyLiterals;
 
 import javax.swing.*;
 
-import General.Smells;
+import Utilities.Smells;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

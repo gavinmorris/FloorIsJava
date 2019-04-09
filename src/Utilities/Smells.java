@@ -1,4 +1,4 @@
-package General;
+package Utilities;
 
 public interface Smells {
 	public String toString();

@@ -1,11 +1,12 @@
 package DeadCode;
 
 import FileProcessing.FileHandler;
-import General.ClassMethod;
-import General.ClassObjectTuple;
-import General.ClassVariable;
-import General.Literals;
 import InappropriateIntimacy.InappropriateIntimacy;
+import Utilities.ClassMethod;
+import Utilities.ClassObjectTuple;
+import Utilities.ClassVariable;
+import Utilities.Literals;
+import Utilities.Smells;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +36,7 @@ public class DeadCode extends JButton implements ActionListener {
         System.out.println("-------Private Methods never called---------");
         checkPrivateMethods();
         System.out.println("-------Protected Methods never called---------");
-        checkProtectedMethods(new ArrayList<ClassMethod<String,String>>());
+        checkProtectedMethods(new ArrayList<ClassMethod<String, String>>());
         System.out.println("-------Public Variables never used---------");
         checkPublicVariables(new ArrayList<ClassVariable<String, String>>());
         System.out.println("-------Private Variables never used---------");

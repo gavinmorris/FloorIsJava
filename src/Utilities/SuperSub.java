@@ -1,4 +1,4 @@
-package General;
+package Utilities;
 
 public class SuperSub<SuperClass, SubClass> {
 	private SuperClass superClassName;
