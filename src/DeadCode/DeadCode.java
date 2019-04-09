@@ -4,7 +4,7 @@ import FileProcessing.FileHandler;
 import InappropriateIntimacy.InappropriateIntimacy;
 import Utilities.ClassMethod;
 import Utilities.ClassObjectTuple;
-import Utilities.ClassVariable;
+import Utilities.ClassMethod;
 import Utilities.Literals;
 import Utilities.Smells;
 
@@ -30,19 +30,22 @@ public class DeadCode extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 
+    public int testNum;
+
     public void report() {
+        InappropriateIntimacy II = new InappropriateIntimacy();
         System.out.println("-------Public Methods never called---------");
-        checkPublicMethods(new ArrayList<ClassMethod<String, String>>());
+        checkPublicMethods(II.getUnusedMethods());
         System.out.println("-------Private Methods never called---------");
         checkPrivateMethods();
         System.out.println("-------Protected Methods never called---------");
         checkProtectedMethods(new ArrayList<ClassMethod<String, String>>());
         System.out.println("-------Public Variables never used---------");
-        checkPublicVariables(new ArrayList<ClassVariable<String, String>>());
+        checkPublicVariables(II.getUnusedVariables());
         System.out.println("-------Private Variables never used---------");
         checkPrivateVariables();
         System.out.println("-------Protected Variables never used---------");
-        checkProtectedVariables(new ArrayList<ClassVariable<String, String>>());
+        checkProtectedVariables(new ArrayList<ClassMethod<String, String>>());
     }
 
 
@@ -90,11 +93,11 @@ public class DeadCode extends JButton implements ActionListener {
             printDeadCodeLines(f, possibleOccurenceArray, "Public Possible Dead Code:");
         }
     }
-    private void checkPublicVariables(List<ClassVariable<String, String>> unused){
+    private void checkPublicVariables(List<ClassMethod<String, String>> unused){
         for(File f : FileHandler.uploadedFiles) {
             boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
             boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
-            for (ClassVariable<String, String> cv : unused) {
+            for (ClassMethod<String, String> cv : unused) {
                 if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
                     boolean definiteOccurence = false;
                     ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
@@ -103,7 +106,7 @@ public class DeadCode extends JButton implements ActionListener {
                         int lineIndex=0;
                         for(String line; (line = br.readLine()) != null; ) {
                             // if line != method call ever then aadd to dead code
-                            if(line.contains(cv.getVariableName())) {
+                            if(line.contains(cv.getClassName())) {
                                 // if method call is a declaration
                                 if (line.contains(Literals.PUBLIC) && !line.contains(Literals.O_BRACKET) && !line.contains(Literals.C_BRACKET) && line.contains("new")) {
                                     possibleOccurenceLineNums.add(lineIndex);
@@ -194,12 +197,12 @@ public class DeadCode extends JButton implements ActionListener {
     private void checkPrivateVariables(){
         for(File f : FileHandler.uploadedFiles) {
             if(!isInterface(f)) {
-                List<ClassVariable<String, String>> variables = new ArrayList<>();
+                List<ClassMethod<String, String>> variables = new ArrayList<>();
                 try(BufferedReader br = new BufferedReader(new FileReader(f))) {
                     for(String line; (line = br.readLine()) != null; ) {
                         // if line contains a variable (not a method) add to list
                         if(line.contains(Literals.PRIVATE) && !line.contains(Literals.O_BRACKET) && !line.contains(Literals.C_BRACKET) && line.contains("new")) {
-                            variables.add(new ClassVariable<>(FileHandler.removeExtension(f.getName()), getMethodDef(line)));
+                            variables.add(new ClassMethod<>(FileHandler.removeExtension(f.getName()), getMethodDef(line)));
                         }
                     }
                 } catch (IOException e) {
@@ -207,7 +210,7 @@ public class DeadCode extends JButton implements ActionListener {
                 }
                 boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
                 boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
-                for (ClassVariable<String, String> cv : variables) {
+                for (ClassMethod<String, String> cv : variables) {
                     if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
                         boolean definiteOccurence = false;
                         ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
@@ -216,7 +219,7 @@ public class DeadCode extends JButton implements ActionListener {
                             int lineIndex=0;
                             for(String line; (line = br.readLine()) != null; ) {
                                 // if line != method call ever then aadd to dead code
-                                if(line.contains(cv.getVariableName())) {
+                                if(line.contains(cv.getMethodName())) {
                                     // if method call is a declaration
                                     // if line contains a variable (not a method) add to list
                                     if (line.contains(Literals.PRIVATE) && !line.contains(Literals.O_BRACKET) && !line.contains(Literals.C_BRACKET) && line.contains("new")) {
@@ -294,11 +297,11 @@ public class DeadCode extends JButton implements ActionListener {
             printDeadCodeLines(f, possibleOccurenceArray, "Protected Possible Dead Code Methods:");
         }
     }
-    private void checkProtectedVariables(List<ClassVariable<String, String>> unused){
+    private void checkProtectedVariables(List<ClassMethod<String, String>> unused){
         for(File f : FileHandler.uploadedFiles) {
             boolean[] definiteDeadCodeArray = new boolean[(int) f.length()];
             boolean[] possibleOccurenceArray = new boolean[(int) f.length()];
-            for (ClassVariable<String, String> cv : unused) {
+            for (ClassMethod<String, String> cv : unused) {
                 if(cv.getClassName().equals(FileHandler.removeExtension(f.getName()))){
                     boolean definiteOccurence = false;
                     ArrayList<Integer> possibleOccurenceLineNums = new ArrayList<>();
@@ -307,7 +310,7 @@ public class DeadCode extends JButton implements ActionListener {
                         int lineIndex=0;
                         for(String line; (line = br.readLine()) != null; ) {
                             // if line != method call ever then aadd to dead code
-                            if(line.contains(cv.getVariableName())) {
+                            if(line.contains(cv.getMethodName())) {
                                 // if method call is a declaration
                                 // if line contains variable (not method)
                                 if (line.contains(Literals.PROTECTED) && !line.contains(Literals.O_BRACKET) && !line.contains(Literals.C_BRACKET) && line.contains("new")) {

@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="760de80a-7122-46fe-a26e-95f1e572cded" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GodComplex/GodComplex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GodComplex/GodComplex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Run/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Run/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/FileParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/FileParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utilities/Smells.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utilities/Smells.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/BloatedClass/BloatedClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DuplicatedCode/DuplicatedCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/InappropriateIntimacy/InappropriateIntimacy.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Run/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Run/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Utilities/FileParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Utilities/FileParser.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,24 +14,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
+            <state relative-caret-position="221">
+              <caret line="317" column="31" lean-forward="true" selection-start-line="317" selection-start-column="31" selection-end-line="317" selection-end-column="31" />
               <folding>
-                <element signature="e#1025#1026#0" expanded="true" />
-                <element signature="e#1065#1066#0" expanded="true" />
+                <element signature="e#1054#1055#0" expanded="true" />
+                <element signature="e#1094#1095#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="38" column="74" selection-start-line="38" selection-start-column="74" selection-end-line="38" selection-end-column="74" />
+            <state relative-caret-position="67">
+              <caret line="313" column="43" selection-start-line="313" selection-start-column="43" selection-end-line="313" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -56,8 +42,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
+            <state relative-caret-position="1257">
+              <caret line="100" column="30" lean-forward="true" selection-start-line="100" selection-start-column="30" selection-end-line="100" selection-end-column="30" />
+              <folding>
+                <element signature="e#1035#1064#0" expanded="true" />
+                <element signature="e#1848#1857#0" expanded="true" />
+                <element signature="e#1911#1920#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -65,7 +56,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GodComplex/GodComplex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="-423">
               <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -77,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="-136">
               <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
             </state>
           </provider>
@@ -95,10 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>duplicateSeparatedLines.add(</find>
-      <find>currentLines.add(</find>
-      <find>dupl</find>
-      <find>dup</find>
       <find>null</find>
       <find>exitLoop</find>
       <find>duplica</find>
@@ -125,6 +112,10 @@
       <find>duplicateConsecutiveLineNums</find>
       <find>System.out.println</find>
       <find>System.out.println(</find>
+      <find>span</find>
+      <find>&lt;/span&gt;&lt;/span&gt;</find>
+      <find>ClassVariable</find>
+      <find>getVariableName</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -149,9 +140,9 @@
         <option value="$PROJECT_DIR$/src/General/Literals.java" />
         <option value="$PROJECT_DIR$/src/General/ClassVariable.java" />
         <option value="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" />
-        <option value="$PROJECT_DIR$/src/DeadCode/DeadCode.java" />
         <option value="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" />
         <option value="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" />
+        <option value="$PROJECT_DIR$/src/DeadCode/DeadCode.java" />
       </list>
     </option>
   </component>
@@ -293,8 +284,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12556732" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12556732" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -302,7 +294,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.128" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.1472" />
+      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.1904" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="3" weight="0.0528" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -319,7 +311,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.22768533" />
+      <window_info anchor="right" id="Run" order="8" visible="true" weight="0.24205749" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
@@ -446,19 +438,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/General/ClassMethod.java" />
-    <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
+    <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="38" column="74" selection-start-line="38" selection-start-column="74" selection-end-line="38" selection-end-column="74" />
+        <state relative-caret-position="1257">
+          <caret line="100" column="30" lean-forward="true" selection-start-line="100" selection-start-column="30" selection-end-line="100" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#1035#1064#0" expanded="true" />
+            <element signature="e#1848#1857#0" expanded="true" />
+            <element signature="e#1911#1920#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GodComplex/GodComplex.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="-423">
           <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -468,25 +462,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="-136">
           <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="293" column="16" selection-start-line="293" selection-start-column="16" selection-end-line="293" selection-end-column="16" />
+        <state relative-caret-position="221">
+          <caret line="317" column="31" lean-forward="true" selection-start-line="317" selection-start-column="31" selection-end-line="317" selection-end-column="31" />
           <folding>
-            <element signature="e#1025#1026#0" expanded="true" />
-            <element signature="e#1065#1066#0" expanded="true" />
+            <element signature="e#1054#1055#0" expanded="true" />
+            <element signature="e#1094#1095#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="313" column="43" selection-start-line="313" selection-start-column="43" selection-end-line="313" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

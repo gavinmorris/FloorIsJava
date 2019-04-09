@@ -10,22 +10,22 @@ import java.util.ArrayList;
 
 public class DuplicatedCode extends JButton implements ActionListener {
 
+    String newLine = "<br>";
     public ArrayList<boolean[]> allWarningLines;
     public ArrayList<boolean[]> allBadLines;
     public ArrayList<boolean[]> allHazardLines;
     public ArrayList<boolean[]> allConsecutiveLines;
-    private ArrayList<String> allFiles;
-    private ArrayList<String> currentFile;
+    public String allFilesAllLines;
 
     private ArrayList<String> file;
     private ArrayList<Integer> blankLines;
     private ArrayList<Integer> curlyLines;
     private ArrayList<Integer> commentedLines;
 
-    boolean[] currentWarningLines;
-    boolean[] currentBadLines;
-    boolean[] currentHazardLines;
-    boolean[] currentConsecutiveLines;
+    private boolean[] currentWarningLines;
+    private boolean[] currentBadLines;
+    private boolean[] currentHazardLines;
+    private boolean[] currentConsecutiveLines;
 
     public DuplicatedCode(){
         this.addActionListener(new ActionListener() {
@@ -39,14 +39,13 @@ public class DuplicatedCode extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 
-    public void report(){
+    public String report(){
 
-        allFiles = new ArrayList<>();
-
-        allFiles.add("\n\n ----- Duplicated Code ----- ");
-        allFiles.add("3-4 lines: warning");
-        allFiles.add("5-6 lines: bad");
-        allFiles.add("7-etc lines: hazard");
+        allFilesAllLines="";
+        allFilesAllLines += newLine+newLine+" ----- Duplicated Code ----- "+newLine;
+        allFilesAllLines += "3-4 lines: warning<br>"+newLine;
+        allFilesAllLines += "5-6 lines: bad<br>"+newLine;
+        allFilesAllLines += "7-etc lines: hazard<br>"+newLine;
 
         allWarningLines = new ArrayList<>();
         allBadLines = new ArrayList<>();
@@ -57,7 +56,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
             File f = FileHandler.uploadedFiles.get(fileNum);
             try(BufferedReader br0 = new BufferedReader(new FileReader(f))) {
 
-                currentFile = new ArrayList<>();
+                String currentFile="";
                 file = new ArrayList<>();
                 blankLines = new ArrayList<>();
                 curlyLines = new ArrayList<>();
@@ -121,8 +120,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 currentHazardLines = new boolean[(int) totalNumLines];
                 currentConsecutiveLines = new boolean[(int) totalNumLines];
 
-                currentFile.add("\n\nClass: " + f.getName()
-                        + ", totalNumLines: " + totalNumLines + ", actualNumLines: " + actualNumLines);
+                currentFile += newLine+newLine+"Class: " + f.getName() + ", totalNumLines: "
+                        + totalNumLines + ", actualNumLines: " + actualNumLines +newLine+newLine;
 
                 bigLoop:
                 for(int occurenceNum=0; occurenceNum<actualNumLines-2; occurenceNum++) {
@@ -269,67 +268,46 @@ public class DuplicatedCode extends JButton implements ActionListener {
                         }
                     }
                 }
-
-                allWarningLines.add(currentWarningLines);
-                allBadLines.add(currentBadLines);
-                allHazardLines.add(currentHazardLines);
-                allConsecutiveLines.add(currentConsecutiveLines);
 //                allConsecutiveLines.add();
 
                 BufferedReader br = new BufferedReader(new FileReader(f));
                 for(int j=0; j<totalNumLines; j++){
                     line = br.readLine();
-                    if(allHazardLines.get(allHazardLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
+                    if(currentWarningLines[j]){
+                        currentFile += "<span style=\"background-color: #FFFF00\">";
                     }
-                    if(allBadLines.get(allBadLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
+                    if(currentBadLines[j]){
+                        currentFile += "<span style=\"background-color: #FFa500\">";
                     }
-                    if(allWarningLines.get(allWarningLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
+                    if(currentHazardLines[j]){
+                        currentFile += "<span style=\"background-color: #FF0000\">";
                     }
+                    if(currentConsecutiveLines[j]){
+                        currentFile += "<span style=\"background-color: #00fff8\">";
+                    }
+                    currentFile += (j+1) + ": " + line;
+                    if(currentConsecutiveLines[j]){
+                        currentFile += "</span>";
+                    }
+                    if(currentHazardLines[j]){
+                        currentFile += "</span>";
+                    }
+                    if(currentBadLines[j]){
+                        currentFile += "</span>";
+                    }
+                    if(currentWarningLines[j]){
+                        currentFile += "</span>";
+                    }
+                    currentFile += newLine;
                 }
                 br.close();
 
-                br = new BufferedReader(new FileReader(f));
-                System.out.println("\nHazard Lines:");
-                for(int j=0; j<totalNumLines; j++){
-                    line = br.readLine();
-                    if(allHazardLines.get(allHazardLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
-                    }
-                }
-                br.close();
+                allWarningLines.add(currentWarningLines);
+                allBadLines.add(currentBadLines);
+                allHazardLines.add(currentHazardLines);
+                allConsecutiveLines.add(currentConsecutiveLines);
 
-                br = new BufferedReader(new FileReader(f));
-                System.out.println("\nBad Lines:");
-                for(int j=0; j<totalNumLines; j++){
-                    line = br.readLine();
-                    if(allBadLines.get(allBadLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
-                    }
-                }
-                br.close();
-
-                br = new BufferedReader(new FileReader(f));
-                System.out.println("\nWarning Lines:");
-                for(int j=0; j<totalNumLines; j++){
-                    line = br.readLine();
-                    if(allWarningLines.get(allWarningLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
-                    }
-                }
-                br.close();
-
-                br = new BufferedReader(new FileReader(f));
-                System.out.println("\nConsecutive Duplicate Lines:");
-                for(int j=0; j<totalNumLines; j++){
-                    line = br.readLine();
-                    if(allConsecutiveLines.get(allConsecutiveLines.size()-1)[j]){
-                        System.out.println((j+1) + " " + line.trim());
-                    }
-                }
-                br.close();
+                allFilesAllLines += currentFile;
 
 
             } catch (IOException e) {
@@ -337,7 +315,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
             }
 
         }
-
+        return allFilesAllLines;
     }
 
     private boolean[] addDuplicateLinesToWarningArray(int currentLinesSize, ArrayList<Integer> currentLineNums,
