@@ -31,7 +31,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                report();
+                System.out.println(report());
             }
         });
     }

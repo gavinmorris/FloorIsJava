@@ -25,9 +25,11 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	
 	private List<ClassObjectTuple<String,String>> cml = new ArrayList<ClassObjectTuple<String,String>>();
 	//protected and public methods
-	private List<ClassMethod<String, String>> unusedMethods = new ArrayList<ClassMethod<String, String>>();
-	private List<ClassMethod<String, String>> unusedVariables = new ArrayList<ClassMethod<String, String>>();
-	
+	private List<ClassMethod<String, String>> unusedPublicMethods = new ArrayList<ClassMethod<String, String>>();
+	private List<ClassMethod<String, String>> unusedProtectedMethods = new ArrayList<ClassMethod<String, String>>();
+	private List<ClassMethod<String, String>> unusedProtectedVariables = new ArrayList<ClassMethod<String, String>>();
+	private List<ClassMethod<String, String>> unusedPublicVariables = new ArrayList<ClassMethod<String, String>>();
+
 	public InappropriateIntimacy(){
 		this.addActionListener(new ActionListener() {
 			@Override
@@ -43,29 +45,42 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	}
 	
 	public void report() {
-		System.out.println("-------Public Methods to be made private.---------");
 		lookForObjects();
 		checkPublicMethods();
 		checkPublicVariables();
-		print();
 	}
 
 	
-	public List<ClassMethod<String, String>> getUnusedMethods() {
+	public List<ClassMethod<String, String>> getUnusedProtectedMethods() {
 		report();
-		return unusedMethods;
+		return unusedProtectedMethods;
+	}
+	public List<ClassMethod<String, String>> getUnusedPublicMethods() {
+		report();
+		return unusedProtectedMethods;
 	}
 	
-	public List<ClassMethod<String, String>> getUnusedVariables() {
+	public List<ClassMethod<String, String>> getUnusedProtectedVariables() {
 		report();
-		return unusedVariables;
+		return unusedProtectedVariables;
+	}
+	
+	public List<ClassMethod<String, String>> getUnusedPublicariables() {
+		report();
+		return unusedPublicVariables;
 	}
 	
 	private void print() {
-		for(ClassMethod<String, String> cm: unusedMethods) {
+		for(ClassMethod<String, String> cm: unusedPublicMethods) {
 			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
 		}
-		for(ClassMethod<String, String> cm: unusedVariables) {
+		for(ClassMethod<String, String> cm: unusedProtectedMethods) {
+			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
+		}
+		for(ClassMethod<String, String> cm: unusedPublicVariables) {
+			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
+		}
+		for(ClassMethod<String, String> cm: unusedProtectedVariables) {
 			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
 		}
 	}
@@ -133,8 +148,11 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		    		    		String method = FileParser.getMethodDef(line);
 		    		    		//check if this method has been used and that the method is not a constructor
 		    		    		if(!isUsed(method,FileHandler.removeExtension(f.getName())) && !method.equals(FileHandler.removeExtension(f.getName()))) {
-		    		    			if(!unusedMethods.contains(method))
-		    		    				unusedMethods.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    			if(!unusedProtectedMethods.contains(method) &&  line.trim().startsWith(Literals.PROTECTED))
+		    		    				unusedProtectedMethods.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    			if(!unusedPublicMethods.contains(method) &&  line.trim().startsWith(Literals.PUBLIC))
+		    		    				unusedPublicMethods.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), method));
+		    		    		
 		    		    		}
 		    		    	}
 	    		    	}
@@ -155,12 +173,14 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	    		    	//if line is not a comment, proceed
 	    		    	if(!FileParser.isComment(line)) {
 	    		    		//if line starts with public and doesn't contain brackets;
-	    		    		if(line.trim().startsWith(Literals.PUBLIC) && !(line.contains(Literals.O_BRACKET) || line.contains(Literals.C_BRACKET))&&line.contains(Literals.EQUALS)) {
+	    		    		if((line.trim().startsWith(Literals.PUBLIC) || line.trim().startsWith(Literals.PROTECTED)) && !(line.contains(Literals.O_BRACKET) || line.contains(Literals.C_BRACKET))&&line.contains(Literals.EQUALS)) {
 	    		    			//get variable definition
 	    		    			String variable = FileParser.getVariableDef(line.trim());
 	    		    			if(!isUsed(variable,FileHandler.removeExtension(f.getName())) && !variable.equals(FileHandler.removeExtension(f.getName()))) {
-		    		    			if(!unusedVariables.contains(variable))
-		    		    				unusedVariables.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), variable));
+		    		    			if(!unusedPublicVariables.contains(variable) &&line.trim().startsWith(Literals.PUBLIC))
+		    		    				unusedPublicVariables.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), variable));
+		    		    			if(!unusedProtectedVariables.contains(variable) &&line.trim().startsWith(Literals.PROTECTED))
+		    		    				unusedProtectedVariables.add(new ClassMethod<String, String>(FileHandler.removeExtension(f.getName()), variable));
 		    		    		}
 	    		    		}
 	    		    	}
