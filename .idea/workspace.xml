@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="760de80a-7122-46fe-a26e-95f1e572cded" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/FloorIsJava/DeadCode/DeadCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/FloorIsJava/DeadCode/DeadCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/FloorIsJava/DuplicatedCode/DuplicatedCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/FloorIsJava/DuplicatedCode/DuplicatedCode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DeadCode/DeadCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,22 +14,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="287" column="43" selection-start-line="287" selection-start-column="43" selection-end-line="287" selection-end-column="43" />
+            <state>
+              <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
+            <state relative-caret-position="211">
+              <caret line="86" column="101" selection-start-line="86" selection-start-column="101" selection-end-line="86" selection-end-column="101" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#checkPublicMethods#0;class#DeadCode#0" />
+                <element signature="method#checkPublicVariables#0;class#DeadCode#0" />
+                <element signature="method#checkPrivateMethods#0;class#DeadCode#0" />
+                <element signature="method#checkPrivateVariables#0;class#DeadCode#0" />
+                <element signature="method#checkProtectedMethods#0;class#DeadCode#0" />
+                <element signature="method#checkProtectedVariables#0;class#DeadCode#0" />
               </folding>
             </state>
           </provider>
@@ -62,8 +65,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="25" column="39" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
+            <state relative-caret-position="272">
+              <caret line="66" column="4" lean-forward="true" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="4" />
+              <folding>
+                <element signature="e#727#760#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,14 +139,14 @@
         <option value="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCodeInterface.java" />
         <option value="$PROJECT_DIR$/src/General/Literals.java" />
         <option value="$PROJECT_DIR$/src/General/ClassVariable.java" />
-        <option value="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" />
         <option value="$PROJECT_DIR$/src/BloatedClass/BloatedClass.java" />
-        <option value="$PROJECT_DIR$/src/DeadCode/DeadCode.java" />
         <option value="$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java" />
+        <option value="$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java" />
+        <option value="$PROJECT_DIR$/src/DeadCode/DeadCode.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="775" />
@@ -259,9 +265,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18229954" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.057488654" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -269,7 +276,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.128" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.216" />
+      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.1456" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="3" weight="0.0528" />
       <window_info anchor="bottom" id="Message" order="4" />
@@ -286,7 +293,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="5" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.20726173" />
+      <window_info active="true" anchor="right" id="Run" order="8" visible="true" weight="0.22692889" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1323752" />
@@ -413,27 +420,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/General/ClassMethod.java" />
-    <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="287" column="43" selection-start-line="287" selection-start-column="43" selection-end-line="287" selection-end-column="43" />
-          <folding>
-            <element signature="e#1054#1055#0" expanded="true" />
-            <element signature="e#1094#1095#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/BloatedClass/BloatedClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1343">
@@ -453,8 +439,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/InappropriateIntimacy/InappropriateIntimacy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="25" column="39" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
+        <state relative-caret-position="272">
+          <caret line="66" column="4" lean-forward="true" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="4" />
+          <folding>
+            <element signature="e#727#760#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DuplicatedCode/DuplicatedCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DeadCode/DeadCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="86" column="101" selection-start-line="86" selection-start-column="101" selection-end-line="86" selection-end-column="101" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#checkPublicMethods#0;class#DeadCode#0" />
+            <element signature="method#checkPublicVariables#0;class#DeadCode#0" />
+            <element signature="method#checkPrivateMethods#0;class#DeadCode#0" />
+            <element signature="method#checkPrivateVariables#0;class#DeadCode#0" />
+            <element signature="method#checkProtectedMethods#0;class#DeadCode#0" />
+            <element signature="method#checkProtectedVariables#0;class#DeadCode#0" />
+          </folding>
         </state>
       </provider>
     </entry>

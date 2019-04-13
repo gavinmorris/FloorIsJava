@@ -65,7 +65,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		return unusedProtectedVariables;
 	}
 	
-	public List<ClassMethod<String, String>> getUnusedPublicariables() {
+	public List<ClassMethod<String, String>> getUnusedPublicVariables() {
 		report();
 		return unusedPublicVariables;
 	}
