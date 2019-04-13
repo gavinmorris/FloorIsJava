@@ -33,7 +33,9 @@ public class DeadCode extends JButton implements ActionListener {
     public int testNum;
 
     public void report() {
+
         InappropriateIntimacy II = new InappropriateIntimacy();
+
         System.out.println("-------Public Methods never called---------");
         checkPublicMethods(II.getUnusedMethods());
         System.out.println("-------Private Methods never called---------");

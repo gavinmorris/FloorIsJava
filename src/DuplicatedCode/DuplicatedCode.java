@@ -36,16 +36,21 @@ public class DuplicatedCode extends JButton implements ActionListener {
         });
     }
 
+
     public void actionPerformed(ActionEvent e) {
+        int k=0;
+        k++;
+        k++;
+        k++;
     }
 
     public String report(){
 
-        allFilesAllLines="";
-        allFilesAllLines += newLine+newLine+" ----- Duplicated Code ----- "+newLine;
-        allFilesAllLines += "3-4 lines: warning<br>"+newLine;
-        allFilesAllLines += "5-6 lines: bad<br>"+newLine;
-        allFilesAllLines += "7-etc lines: hazard<br>"+newLine;
+        allFilesAllLines="<code><xmp style=\"display:inline\">";
+        allFilesAllLines += "\n\n+ ----- Duplicated Code ----- "+"\n";
+        allFilesAllLines += "3-4 lines: warning"+"\n";
+        allFilesAllLines += "5-6 lines: bad"+"\n";
+        allFilesAllLines += "7-etc lines: hazard"+"\n";
 
         allWarningLines = new ArrayList<>();
         allBadLines = new ArrayList<>();
@@ -120,8 +125,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 currentHazardLines = new boolean[(int) totalNumLines];
                 currentConsecutiveLines = new boolean[(int) totalNumLines];
 
-                currentFile += newLine+newLine+"Class: " + f.getName() + ", totalNumLines: "
-                        + totalNumLines + ", actualNumLines: " + actualNumLines +newLine+newLine;
+                currentFile += "\n\nClass: " + f.getName() + ", totalNumLines: "
+                        + totalNumLines + ", actualNumLines: " + actualNumLines +"\n\n";
 
                 bigLoop:
                 for(int occurenceNum=0; occurenceNum<actualNumLines-2; occurenceNum++) {
@@ -274,31 +279,33 @@ public class DuplicatedCode extends JButton implements ActionListener {
                 for(int j=0; j<totalNumLines; j++){
                     line = br.readLine();
                     if(currentWarningLines[j]){
-                        currentFile += "<span style=\"background-color: #FFFF00\">";
+                        currentFile += "</xmp><span style=\"background-color: #FFFF00\">";
                     }
                     if(currentBadLines[j]){
-                        currentFile += "<span style=\"background-color: #FFa500\">";
+                        currentFile += "</xmp><span style=\"background-color: #FFa500\">";
                     }
                     if(currentHazardLines[j]){
-                        currentFile += "<span style=\"background-color: #FF0000\">";
+                        currentFile += "</xmp><span style=\"background-color: #FF0000\">";
                     }
                     if(currentConsecutiveLines[j]){
-                        currentFile += "<span style=\"background-color: #00fff8\">";
+                        currentFile += "</xmp><span style=\"background-color: #00fff8\">";
                     }
+
                     currentFile += (j+1) + ": " + line;
+
                     if(currentConsecutiveLines[j]){
-                        currentFile += "</span>";
+                        currentFile += "</span><xmp style=\"display:inline\">";
                     }
                     if(currentHazardLines[j]){
-                        currentFile += "</span>";
+                        currentFile += "</span><xmp style=\"display:inline\">";
                     }
                     if(currentBadLines[j]){
-                        currentFile += "</span>";
+                        currentFile += "</span><xmp style=\"display:inline\">";
                     }
                     if(currentWarningLines[j]){
-                        currentFile += "</span>";
+                        currentFile += "</span><xmp style=\"display:inline\">";
                     }
-                    currentFile += newLine;
+                    currentFile += "\n";
                 }
                 br.close();
 
@@ -315,6 +322,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
             }
 
         }
+        allFilesAllLines += "</xmp></code>";
+        System.out.println(allFilesAllLines);
         return allFilesAllLines;
     }
 
