@@ -28,13 +28,13 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
 	
 	private int numberOfMethods = 0;
 	private int linesInFile = 0;
-	//private int tooLong = 0;
 	private int methodLineStart = 0;
 	private int methodLineFinish = 0;
-	private String output =  "-------Methods that are too long.---------<br >";
+	public static String output =  "-------Methods that are too long.---------\n";
+	
 	private String method = "";
 	private List<ClassMethod<String, String>> unused = new ArrayList<ClassMethod<String, String>>();
-	//private String fileName;
+
 	
 	
 	
@@ -53,23 +53,26 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
        
     }
     
-   
+   public void report() {
+	   lookForBloatedMethods();
+	   printReport();
+	   
+   }
  
     
-    public void report()  {
-    	//printWelcomeMessage();
+    public void lookForBloatedMethods()  {
+    	
     	for(File f : FileHandler.uploadedFiles) {
     		
 			numberOfMethods = 0;
-			//tooLong = 0;
 			linesInFile = 0;
 			methodLineStart = 0;
 			methodLineFinish = 0;
-			//fileName = f.getName();
+			
 			   		
     		try(BufferedReader br = new BufferedReader(new FileReader(f))){
     			
-    			// System.out.println(fileName + "\n");
+    			
     			 Stack<Integer> closingBrackets = new Stack<Integer>();
     			 Stack<Integer> openingBrackets = new Stack<Integer>();
     		
@@ -79,37 +82,31 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
     				 if(!FileParser.isComment(line)) {
     				 
     				 //checks if its the method declaration
-//    				 if(line.contains(Literals.PUBLIC) || line.contains(Literals.PRIVATE)
-//    						 || line.contains(Literals.PROTECTED) || line.contains("void")) {
-    					 if(checkModifier(line)) {
+
+    					 if(checkAccessSpecifier(line)) {
     					 
-    					 	if(line.contains("(") && line.contains(")") && line.contains("{")) {
+    					 	if(line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && line.contains(Literals.O_Curly)) {
     					 
     					 	 method = FileParser.getMethodDef(line);
-    					 	 //System.out.println(method + "wow\n");
     						 numberOfMethods();
     						 methodLineStart = linesInFile;
  
     					 	}
     						 	 
     					 }
-//						 if(linesInMethod != 0) {
-//							 if(line.contains(Literals.PUBLIC)) {
-//								 continue;
-//							 }else {
-//								 countLinesInMethod();
-//							 }
-//						 }
+						
     				 
     				 if(numberOfMethods >= 1) {
  	 
     				 if(checkLineForOpeningCurlyBracket(line)) {
 						 openingBrackets.push(1);
+						//System.out.println("opening : " + method + " : " + linesInFile + " : " + openingBrackets.size() + "\n");
 						
 					 }
 					 					 
     				  if(checkLineForClosingCurlyBracket(line)) {
 						 closingBrackets.push(1);
+						// System.out.println("Closing : " + method + " : " + linesInFile + " : " + closingBrackets.size() + "\n");
 						 
 					 }
     				 
@@ -150,38 +147,42 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
     }//end buffer 
     		
     		
+    		
  
     		catch (IOException e) { //18 opening
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
     		
-    		printReport();
     		
-    		unused.clear();
 
     	}//end file
     	
+    	//printReport();
+		
+		//unused.clear();
     			 
     }//end method
+    
+    
   
     
     
     public boolean checkLineForOpeningCurlyBracket(String line) {
-    	if (line.contains("{")) {
+    	if (line.contains(Literals.O_Curly)) {
     		return true;
     	}
     	else return false;
     }
     
     public boolean checkLineForClosingCurlyBracket(String line) {
-    	if (line.contains("}")) {
+    	if (line.contains(Literals.C_Curly)) {
     		return true;
     	}
     	else return false;
     }
     
-    public boolean checkModifier(String line) {
+    public boolean checkAccessSpecifier(String line) {
     	if(line.contains(Literals.PUBLIC) || line.contains(Literals.PRIVATE) || line.contains(Literals.PROTECTED)) {
     		return true;
     	}
@@ -200,21 +201,15 @@ public class BloatedClass extends JButton implements ActionListener, Smells {
     }
     
     public void printReport() {
-    	//output += "Number of Methods over 50 lines : " + tooLong + "</br >";
     	
     	for(ClassMethod<String, String> cm: unused) {
     		
-    		output += cm.getClassName()+" : "+cm.getMethodName()+ "</br >";
+    		output +=  cm.getClassName()+" : "+cm.getMethodName()+ "\n";
+    		System.out.println(output);
+    		
 		}
     }
     
-//    public void printWelcomeMessage() {
-//    	System.out.println("--------Bloated Code--------\n\n");
-//    	System.out.println("The average method length is around 30 lines, so if your method is over 30 lines then its getting too long.\n"
-//    			+ "If your method is 50 lines or over than it is likely that there is some bloat somewhere in that method and it should be \n"
-//    			+ "checked out to see if there is any redundant logic or unnecessary varibles \n");
-//    }
-//    
 
     
     public void numberOfMethods() {
