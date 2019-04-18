@@ -9,5 +9,8 @@ public class Literals {
 	public static final String PROTECTED = "protected ";
 	public static final String LESS_THAN = "<";
 	public static final String GREATER_THAN = ">"; 
+	public static final String O_Curly = "{";
+	public static final String C_Curly = "}";
+	
 	
 }

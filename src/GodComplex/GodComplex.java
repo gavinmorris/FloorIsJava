@@ -21,9 +21,7 @@ public class GodComplex extends JButton implements ActionListener , Smells{
 	private String output = "-------God Complex-------\n";
 	private String fileName = "";
 	
-//basing on whether a class is a god class or not based on how many methods are in it and how many lines of code there are
-	//an average class has at most 30 methods, anymore than 30 and it is a potential god class
-	//if it has 50 then it is quite likely its a god class since its probably lost its single responsibility at that point
+
 
     public GodComplex(){
         this.addActionListener(new ActionListener() {
@@ -39,17 +37,21 @@ public class GodComplex extends JButton implements ActionListener , Smells{
 
 
     
-    public void printResult() {
+    public void printResult(String fileName) {
     	
   
     	if(numberOfMethods > 30 || numberOfLines > 900) {
+    		output += "-------------" + fileName + "-------------\n";
     		output += numberOfMethods + " methods  and " + numberOfLines + " lines \n";
     		output += "there are too many methods in this class, its godly in a bad way \n";
     		
     	}
     	
     	else {
-    	output += numberOfMethods + " methods  and " + numberOfLines + " lines \n";
+    	output += "-------------" + fileName + "-------------\n";
+    	output += numberOfMethods + " methods and " + numberOfLines + " lines \n";
+    	output += "not enough methods to classify that it is a god class.\n";
+    	
     	
     	}
     	
@@ -65,7 +67,7 @@ public class GodComplex extends JButton implements ActionListener , Smells{
     		numberOfMethods = 0;
     		numberOfLines = 0;
     		fileName += FileHandler.removeExtension(f.getName()) + "\n";
-    		System.out.println(fileName);
+    		
     		
     		
     		
@@ -91,7 +93,7 @@ public class GodComplex extends JButton implements ActionListener , Smells{
     			}
     			
     			
-    			printResult();
+    			printResult(fileName);
     		
     		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
