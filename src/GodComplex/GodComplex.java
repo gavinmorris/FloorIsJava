@@ -18,8 +18,8 @@ public class GodComplex extends JButton implements ActionListener , Smells{
 	
 	private int numberOfMethods = 0; 
 	private int numberOfLines = 0;
-	private String output = "-------God Complex-------<br>";
-	private String fileName = "<br>";
+	private String output = "-------God Complex-------\n";
+	private String fileName = "";
 	
 //basing on whether a class is a god class or not based on how many methods are in it and how many lines of code there are
 	//an average class has at most 30 methods, anymore than 30 and it is a potential god class
@@ -37,59 +37,37 @@ public class GodComplex extends JButton implements ActionListener , Smells{
         });
     }
 
-//    public void printWelcomeMessage() {
-//    	
-//    	System.out.println("----------GOD CLASS----------\n\n");
-//    	System.out.println("an average class dosent have more than 30 methods and has around 900 lines of code, anything above that is a potenial god class\n");
-//    	System.out.println("if the class has between 30 and 50 methods, it is a potential god class and should be checked out\n");
-//    	System.out.println("if the class has over 50 methods then it rasies a serious flag and it is quite likely that it is a god class");
-//    	System.out.println("\n\n\n");
-//    	
-//    }
+
     
     public void printResult() {
     	
-    	if(numberOfMethods >= 30 && numberOfMethods < 50) {
-    		output += "there are " + numberOfMethods + " methods in this class, an average class has at most 30"
-    				+ " methods in it, this class is a potential god class and should be looked at</br >";
+  
+    	if(numberOfMethods > 30 || numberOfLines > 900) {
+    		output += numberOfMethods + " methods  and " + numberOfLines + " lines \n";
+    		output += "there are too many methods in this class, its godly in a bad way \n";
+    		
     	}
     	
-    	if(numberOfMethods > 50) {
-    		output += " there are " + numberOfMethods + " methods in this class, an average class has at most 30 methods"
-    			+ " in it, this class should be checked out as a potential god class</br >";
-    		 
+    	else {
+    	output += numberOfMethods + " methods  and " + numberOfLines + " lines \n";
+    	
     	}
-    	
-    	if(numberOfLines >= 900 && numberOfLines < 1500) {
-    		output += "there are " + numberOfLines + " lines in this class, an average class has around 900 or so lines"
-    				 + " this class should be checked out as a potential god class </br >";
-    	}
-    	
-    	if(numberOfLines > 1500) {
-    		output += "there are " + numberOfLines + " lines in this class, an average class has around 900 or so lines"
-    				+ " this class may be a god class and should be re-evaluated </br >";
-    	}
-    	
-    	
-    	output += numberOfMethods + " methods  and " + numberOfLines + " lines </br >";
-    	System.out.println(output);
     	
     }
      
     public void report() {
     	
-    	//printWelcomeMessage();
-    	//output = "";
+    	
     	for(File f: FileHandler.uploadedFiles) {
     		
-    		output = "<br>";
-    		fileName = "<br>";
+    		output = "\n";
+    		fileName = "\n";
     		numberOfMethods = 0;
     		numberOfLines = 0;
-    		fileName += FileHandler.removeExtension(f.getName()) + "</br>";
+    		fileName += FileHandler.removeExtension(f.getName()) + "\n";
     		System.out.println(fileName);
     		
-    		//System.out.println(fileName + "\n");
+    		
     		
     		
     		try(BufferedReader br = new BufferedReader(new FileReader(f))){
@@ -101,7 +79,7 @@ public class GodComplex extends JButton implements ActionListener , Smells{
     				if(line.contains(Literals.PUBLIC) || line.contains(Literals.PRIVATE)
    						 || line.contains(Literals.PROTECTED) || line.contains("void")) {
     					
-    					if(line.contains("(") && line.contains(")") && line.contains("{")) {
+    					if(line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && line.contains(Literals.O_Curly)) {
        					 
    						 countNumberOfMethods();
    						 
@@ -112,8 +90,8 @@ public class GodComplex extends JButton implements ActionListener , Smells{
     				
     			}
     			
-    			printResult();
     			
+    			printResult();
     		
     		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -123,6 +101,8 @@ public class GodComplex extends JButton implements ActionListener , Smells{
 				e.printStackTrace();
 			}
     	}
+    	
+    
     }
     
    
@@ -146,5 +126,8 @@ public class GodComplex extends JButton implements ActionListener , Smells{
 		
 	}
 	
+
+
+
 }
 
