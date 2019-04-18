@@ -1,5 +1,9 @@
 package InappropriateIntimacy;
 
+import FileProcessing.FileHandler;
+import Utilities.*;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -7,17 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import FileProcessing.FileHandler;
-import Utilities.ClassMethod;
-import Utilities.ClassObjectTuple;
-import Utilities.FileParser;
-import Utilities.Literals;
-import Utilities.Smells;
-import Utilities.SuperSub;
-
-import javax.swing.*;
 
 public class InappropriateIntimacy extends JButton implements ActionListener, Smells {
 
@@ -57,7 +51,7 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 	}
 	public List<ClassMethod<String, String>> getUnusedPublicMethods() {
 		report();
-		return unusedProtectedMethods;
+		return unusedPublicMethods;
 	}
 	
 	public List<ClassMethod<String, String>> getUnusedProtectedVariables() {
@@ -70,7 +64,8 @@ public class InappropriateIntimacy extends JButton implements ActionListener, Sm
 		return unusedPublicVariables;
 	}
 	
-	private void print() {
+	public void print() {
+		report();
 		for(ClassMethod<String, String> cm: unusedPublicMethods) {
 			System.out.println(cm.getClassName()+" : "+cm.getMethodName());
 		}

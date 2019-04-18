@@ -46,7 +46,7 @@ public class DuplicatedCode extends JButton implements ActionListener {
 
     public String report(){
 
-        allFilesAllLines="<code><xmp style=\"display:inline\">";
+        allFilesAllLines="";
         allFilesAllLines += "\n\n+ ----- Duplicated Code ----- "+"\n";
         allFilesAllLines += "3-4 lines: warning"+"\n";
         allFilesAllLines += "5-6 lines: bad"+"\n";
@@ -291,6 +291,8 @@ public class DuplicatedCode extends JButton implements ActionListener {
                         currentFile += "</xmp><span style=\"background-color: #00fff8\">";
                     }
 
+                    line = line.replaceAll("<xmp>", "<\'xmp\'>");
+                    line = line.replaceAll("</xmp>", "<\'/xmp\'>");
                     currentFile += (j+1) + ": " + line;
 
                     if(currentConsecutiveLines[j]){
@@ -322,7 +324,6 @@ public class DuplicatedCode extends JButton implements ActionListener {
             }
 
         }
-        allFilesAllLines += "</xmp></code>";
         System.out.println(allFilesAllLines);
         return allFilesAllLines;
     }

@@ -3,15 +3,15 @@ package DeadCode;
 import FileProcessing.FileHandler;
 import InappropriateIntimacy.InappropriateIntimacy;
 import Utilities.ClassMethod;
-import Utilities.ClassObjectTuple;
-import Utilities.ClassMethod;
 import Utilities.Literals;
-import Utilities.Smells;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,6 @@ public class DeadCode extends JButton implements ActionListener {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("\n\n\nDead Code Checker\n\n");
                 report();
             }
         });
@@ -32,39 +31,53 @@ public class DeadCode extends JButton implements ActionListener {
 
     public int testNum;
 
-    public void report() {
+    public String report() {
 
         InappropriateIntimacy II = new InappropriateIntimacy();
 
-        System.out.println("-------Public Methods never called---------");
-        checkIfMethodIsCalledInClass(II.getUnusedPublicMethods(), Literals.PUBLIC, true);
-//        checkPublicMethods(II.getUnusedPublicMethods());
-        System.out.println("-------Private Methods never called---------");
-        checkIfMethodIsCalledInClass(new ArrayList<>(), Literals.PRIVATE, true);
-        System.out.println("-------Protected Methods never called---------");
-        checkIfMethodIsCalledInClass(II.getUnusedProtectedMethods(), Literals.PROTECTED, true);
-//        checkProtectedMethods(II.getUnusedProtectedMethods());
-        System.out.println("-------Public Variables never used---------");
-        checkIfMethodIsCalledInClass(II.getUnusedPublicMethods(), Literals.PUBLIC, false);
-//        checkPublicVariables(II.getUnusedPublicVariables());
-        System.out.println("-------Private Variables never used---------");
-        checkIfMethodIsCalledInClass(new ArrayList<>(), Literals.PRIVATE, false);
-        System.out.println("-------Protected Variables never used---------");
-        checkIfMethodIsCalledInClass(II.getUnusedProtectedMethods(), Literals.PROTECTED, false);
-//        checkProtectedVariables(II.getUnusedProtectedVariables());
+        II.print();
+        String output="\n\n\nDead Code Checker\n\n";;
+
+        output += "-------Public Methods never called---------" + "\n";
+//        System.out.println("-------Public Methods never called---------");
+        output += checkIfMethodIsCalledInClass(II.getUnusedPublicMethods(), Literals.PUBLIC, true);
+        output += "-------Private Methods never called---------" + "\n";
+//        System.out.println("-------Private Methods never called---------");
+        output += checkIfMethodIsCalledInClass(new ArrayList<>(), Literals.PRIVATE, true);
+        output += "-------Protected Methods never called---------" + "\n";
+//        System.out.println("-------Protected Methods never called---------");
+        output += checkIfMethodIsCalledInClass(II.getUnusedProtectedMethods(), Literals.PROTECTED, true);
+        output += "-------Public Variables never used---------" + "\n";
+//        System.out.println("-------Public Variables never used---------");
+        output += checkIfMethodIsCalledInClass(II.getUnusedPublicVariables(), Literals.PUBLIC, false);
+        output += "-------Private Variables never used---------" + "\n";
+//        System.out.println("-------Private Variables never used---------");
+        output += checkIfMethodIsCalledInClass(new ArrayList<>(), Literals.PRIVATE, false);
+        output += "-------Protected Variables never used---------" + "\n";
+//        System.out.println("-------Protected Variables never used---------");
+        output += checkIfMethodIsCalledInClass(II.getUnusedProtectedVariables(), Literals.PROTECTED, false);
+
+        System.out.println(output);
+        return output;
     }
 
-    private void checkIfMethodIsCalledInClass(List<ClassMethod<String, String>> unused, String accessSpecifier, boolean isMethod){
-        for(int i=0; i<unused.size(); i++){
-            System.out.println(unused.get(i).getClassName() + " " + unused.get(i).getMethodName());
-        }
+    private String checkIfMethodIsCalledInClass(List<ClassMethod<String, String>> unused, String accessSpecifier, boolean isMethod){
+        String str="";
         for(File f : FileHandler.uploadedFiles) {
-            if(accessSpecifier.equals(Literals.PRIVATE) && !isInterface(f)) {
+            if(FileHandler.uploadedFiles.size() == 1 || accessSpecifier.equals(Literals.PRIVATE)){
+                unused = new ArrayList<>();
+//            if(!isInterface(f)) {
+//                System.out.println("yi");
                 try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+//                    System.out.println("ya");
+//                    int k=0;
                     for (String line; (line = br.readLine()) != null; ) {
+//                        k++;
+//                        System.out.println("ye");
                         if(isMethod) {
                             if (line.contains(accessSpecifier) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
                                 unused.add(new ClassMethod<>(FileHandler.removeExtension(f.getName()), getMethodDef(line)));
+//                                System.out.println("k: " + k);
                             }
                         }
                         else{
@@ -76,6 +89,11 @@ public class DeadCode extends JButton implements ActionListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+//            }
+//                System.out.println(f.getName() + " Unused " + accessSpecifier + ":");
+//                for(int i=0; i<unused.size(); i++){
+//                    System.out.println(unused.get(i).getClassName() + " " + unused.get(i).getMethodName());
+//                }
             }
             int fileLength=0;
             try (BufferedReader br = new BufferedReader(new FileReader(f))) {
@@ -85,11 +103,6 @@ public class DeadCode extends JButton implements ActionListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            for(int i=0; i<unused.size(); i++){
-                System.out.println(unused.get(i).getClassName() + " " + unused.get(i).getMethodName());
-            }
-
             boolean[] definiteDeadCodeArray = new boolean[fileLength];
             boolean[] possibleOccurenceArray = new boolean[fileLength];
             for (ClassMethod<String, String> cm : unused) {
@@ -102,7 +115,7 @@ public class DeadCode extends JButton implements ActionListener {
                         for (String line; (line = br.readLine()) != null; ) {
                             if (isMethod) {
                                 // if line != method call ever then aadd to dead code
-                                if (line.contains(" ".concat(cm.getMethodName().concat("("))) || line.contains(".".concat(cm.getMethodName().concat("(")))) {
+                                if (line.contains(cm.getMethodName().concat("("))) {
                                     // if method call is a declaration
                                     if (line.contains(accessSpecifier) && line.contains(Literals.O_BRACKET) && line.contains(Literals.C_BRACKET) && !line.contains("new")) {
                                         possibleOccurenceLineNums.add(lineIndex);
@@ -141,14 +154,15 @@ public class DeadCode extends JButton implements ActionListener {
                 }
             }
             if(isMethod) {
-                printDeadCodeLines(f, definiteDeadCodeArray, accessSpecifier + "Methods Definite Dead Code:");
-                printDeadCodeLines(f, possibleOccurenceArray, accessSpecifier + "Methods Possible Dead Code:");
+                str += printDeadCodeLines(f, definiteDeadCodeArray, f.getName() + ": " + accessSpecifier + "Methods Definite Dead Code:");
+                str += printDeadCodeLines(f, possibleOccurenceArray, f.getName() + ": " + accessSpecifier + "Methods Possible Dead Code:");
             }
             else{
-                printDeadCodeLines(f, definiteDeadCodeArray, accessSpecifier + "Variables Definite Dead Code:");
-                printDeadCodeLines(f, possibleOccurenceArray, accessSpecifier + "Variables Possible Dead Code:");
+                str += printDeadCodeLines(f, definiteDeadCodeArray, f.getName() + ": " + accessSpecifier + "Variables Definite Dead Code:");
+                str += printDeadCodeLines(f, possibleOccurenceArray, f.getName() + ": " + accessSpecifier + "Variables Possible Dead Code:");
             }
         }
+        return str;
     }
 
 
@@ -451,20 +465,29 @@ public class DeadCode extends JButton implements ActionListener {
 
 
 
-    private void printDeadCodeLines(File f, boolean[] DeadCodeArray, String message){
-        System.out.println("\n" + message);
+    private String printDeadCodeLines(File f, boolean[] DeadCodeArray, String message){
+        String str = "";
+        boolean printMessage = true;
         try { BufferedReader br = new BufferedReader(new FileReader(f));
             String line;
             for(int i=0; i<DeadCodeArray.length; i++){
                 line = br.readLine();
                 if(DeadCodeArray[i]) {
-                    System.out.println((i+1) + " " + line.trim());
+                    if(printMessage) {
+                        str += message + "\n";
+//                            System.out.println(message);
+                        printMessage = false;
+                    }
+                    str += /*(i+1) + " " + */line.trim() + "\n";
+//                    System.out.println((i+1) + " " + line.trim());
                 }
             }
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if(!printMessage) str += "\n"; //System.out.println();
+        return str;
     }
 
 
